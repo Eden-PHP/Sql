@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -18,8 +18,8 @@ namespace Eden\Sql;
  */
 class Insert extends Query 
 {
-	protected $_setKey = array();
-    protected $_setVal = array();
+	protected $setKey = array();
+    protected $setVal = array();
 	
 	/**
 	 * Construct: Set the table, if any
@@ -46,12 +46,12 @@ class Insert extends Query
 	public function getQuery() 
 	{
 		$multiValList = array();
-		foreach($this->_setVal as $val) {
+		foreach($this->setVal as $val) {
 			$multiValList[] = '('.implode(', ', $val).')';
 		}
 		
 		return 'INSERT INTO '
-			. $this->_table . ' ('.implode(', ', $this->_setKey)
+			. $this->table . ' ('.implode(', ', $this->setKey)
 			. ') VALUES ' . implode(", \n", $multiValList).';';
 	}
 	
@@ -72,8 +72,8 @@ class Insert extends Query
 			//Argument 2 must be scalar or null
 			->test(2, 'scalar', 'null');	
 		
-		if(!in_array($key, $this->_setKey)) {
-			$this->_setKey[] = $key;
+		if(!in_array($key, $this->setKey)) {
+			$this->setKey[] = $key;
 		}
 		
 		if(is_null($value)) {
@@ -82,7 +82,7 @@ class Insert extends Query
 			$value = $value ? 1 : 0;
 		}
 		
-		$this->_setVal[$index][] = $value;
+		$this->setVal[$index][] = $value;
 		return $this;
 	}
 	
@@ -97,7 +97,7 @@ class Insert extends Query
 		//Argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		$this->_table = $table;
+		$this->table = $table;
 		return $this;
 	}	
 }

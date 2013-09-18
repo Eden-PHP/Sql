@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -18,8 +18,8 @@ namespace Eden\Sql;
  */
 class Delete extends Query 
 {
-	protected $_table = null;
-	protected $_where = array();
+	protected $table = null;
+	protected $where = array();
 	
 	/**
 	 * Construct: Set the table, if any
@@ -44,8 +44,8 @@ class Delete extends Query
 	public function getQuery() 
 	{
 		return 'DELETE FROM '
-			.$this->_table.' WHERE '
-			.implode(' AND ', $this->_where).';';
+			.$this->table.' WHERE '
+			.implode(' AND ', $this->where).';';
 	}
 	
 	/**
@@ -59,7 +59,7 @@ class Delete extends Query
 		//Argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		$this->_table = $table;
+		$this->table = $table;
 		return $this;
 	}
 	
@@ -78,7 +78,7 @@ class Delete extends Query
 			$where = array($where);
 		}
 		
-		$this->_where = array_merge($this->_where, $where); 
+		$this->where = array_merge($this->where, $where); 
 		
 		return $this;
 	}	

@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -27,18 +27,18 @@ class Search extends Base
 	const ASC	= 'ASC';
 	const DESC	= 'DESC';
 	
-	protected $_database 	= null;
-	protected $_table		= null;
-	protected $_columns		= array();
-	protected $_join 		= array();
-	protected $_filter		= array();
-	protected $_sort		= array();
-	protected $_group		= array();
-	protected $_start		= 0;
-	protected $_range		= 0;
+	protected $database = null;
+	protected $table = null;
+	protected $columns = array();
+	protected $join = array();
+	protected $filter = array();
+	protected $sort	= array();
+	protected $group = array();
+	protected $start = 0;
+	protected $range = 0;
 	
-	protected $_model	 	= Database::MODEL;
-	protected $_collection 	= Database::COLLECTION;
+	protected $model = Database::MODEL;
+	protected $collection = Database::COLLECTION;
 	
 	/**
 	 * Magical processing of sortBy 
@@ -125,10 +125,8 @@ class Search extends Base
 	 */
 	public function __construct(Database $database) 
 	{
-		$this->_database = $database;
+		$this->database = $database;
 	}
-	
-	
 	
 	/**
 	 * Adds filter
@@ -142,7 +140,7 @@ class Search extends Base
 		//Argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		$this->_filter[] = func_get_args();
+		$this->filter[] = func_get_args();
 		
 		return $this;
 	}
@@ -166,7 +164,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::INNER, $table, $where, false);
+		$this->join[] = array(self::INNER, $table, $where, false);
 		
 		return $this;
 	}
@@ -190,7 +188,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::INNER, $table, $where, true);
+		$this->join[] = array(self::INNER, $table, $where, true);
 		
 		return $this;
 	}
@@ -214,7 +212,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::LEFT, $table, $where, false);
+		$this->join[] = array(self::LEFT, $table, $where, false);
 		
 		return $this;
 	}
@@ -238,7 +236,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::LEFT, $table, $where, true);
+		$this->join[] = array(self::LEFT, $table, $where, true);
 		
 		return $this;
 	}
@@ -262,7 +260,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::OUTER, $table, $where, false);
+		$this->join[] = array(self::OUTER, $table, $where, false);
 		
 		return $this;
 	}
@@ -286,7 +284,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::OUTER, $table, $where, true);
+		$this->join[] = array(self::OUTER, $table, $where, true);
 		
 		return $this;
 	}
@@ -310,7 +308,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::RIGHT, $table, $where, false);
+		$this->join[] = array(self::RIGHT, $table, $where, false);
 		
 		return $this;
 	}
@@ -334,7 +332,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::RIGHT, $table, $where, true);
+		$this->join[] = array(self::RIGHT, $table, $where, true);
 		
 		return $this;
 	}
@@ -359,7 +357,7 @@ class Search extends Base
 			$order = self::ASC;
 		}
 		
-		$this->_sort[$column] = $order;
+		$this->sort[$column] = $order;
 		
 		return $this;
 	}
@@ -371,11 +369,11 @@ class Search extends Base
 	 */
 	public function getCollection() 
 	{
-		$collection = $this->_collection;
+		$collection = $this->collection;
 		return $this->$collection()
-			->setDatabase($this->_database)
-			->setTable($this->_table)
-			->setModel($this->_model)
+			->setDatabase($this->database)
+			->setTable($this->table)
+			->setModel($this->model)
 			->set($this->getRows());
 	}
 	
@@ -430,25 +428,25 @@ class Search extends Base
 	 */
 	public function getRows() 
 	{
-		$query = $this->_getQuery();
+		$query = $this->getQuery();
 		
-		if(!empty($this->_columns)) {
-			$query->select(implode(', ', $this->_columns));
+		if(!empty($this->columns)) {
+			$query->select(implode(', ', $this->columns));
 		}
 		
-		foreach($this->_sort as $key => $value) {
+		foreach($this->sort as $key => $value) {
 			$query->sortBy($key, $value);
 		}
 		
-		if($this->_range) {
-			$query->limit($this->_start, $this->_range);
+		if($this->range) {
+			$query->limit($this->start, $this->range);
 		}
 		
-		if(!empty($this->_group)) {
-			$query->groupBy($this->_group);
+		if(!empty($this->group)) {
+			$query->groupBy($this->group);
 		}
 		
-		return $this->_database->query($query, $this->_database->getBinds());
+		return $this->database->query($query, $this->database->getBinds());
 	}
 	
 	/**
@@ -458,9 +456,9 @@ class Search extends Base
 	 */
 	public function getTotal() 
 	{
-		$query = $this->_getQuery()->select('COUNT(*) as total');
+		$query = $this->getQuery()->select('COUNT(*) as total');
 		
-		$rows = $this->_database->query($query, $this->_database->getBinds());
+		$rows = $this->database->query($query, $this->database->getBinds());
 		
 		if(!isset($rows[0]['total'])) {
 			return 0;
@@ -488,7 +486,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::INNER, $table, $where, false);
+		$this->join[] = array(self::INNER, $table, $where, false);
 		
 		return $this;
 	}
@@ -512,7 +510,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::INNER, $table, $where, true);
+		$this->join[] = array(self::INNER, $table, $where, true);
 		
 		return $this;
 	}
@@ -536,7 +534,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::LEFT, $table, $where, false);
+		$this->join[] = array(self::LEFT, $table, $where, false);
 		
 		return $this;
 	}
@@ -560,7 +558,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::LEFT, $table, $where, true);
+		$this->join[] = array(self::LEFT, $table, $where, true);
 		
 		return $this;
 	}
@@ -584,7 +582,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::OUTER, $table, $where, false);
+		$this->join[] = array(self::OUTER, $table, $where, false);
 		
 		return $this;
 	}
@@ -608,7 +606,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::OUTER, $table, $where, true);
+		$this->join[] = array(self::OUTER, $table, $where, true);
 		
 		return $this;
 	}
@@ -632,7 +630,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::RIGHT, $table, $where, false);
+		$this->join[] = array(self::RIGHT, $table, $where, false);
 		
 		return $this;
 	}
@@ -656,7 +654,7 @@ class Search extends Base
 		$where = func_get_args();
 		$table = array_shift($where);
 		
-		$this->_join[] = array(self::RIGHT, $table, $where, true);
+		$this->join[] = array(self::RIGHT, $table, $where, true);
 		
 		return $this;
 	}
@@ -673,7 +671,7 @@ class Search extends Base
 			$columns = func_get_args();
 		}
 		
-		$this->_columns = $columns;
+		$this->columns = $columns;
 		
 		return $this;
 	}
@@ -695,7 +693,7 @@ class Search extends Base
 				->trigger();
 		}
 		
-		$this->_collection = $collection;
+		$this->collection = $collection;
 		return $this;
 	}
 	
@@ -714,7 +712,7 @@ class Search extends Base
 			$group = array($group); 
 		}
 		
-		$this->_group = $group; 
+		$this->group = $group; 
 		return $this;
 	}
 	
@@ -734,7 +732,7 @@ class Search extends Base
 				->trigger();
 		}
 		
-		$this->_model = $model;
+		$this->model = $model;
 		return $this;
 	}
 	
@@ -752,7 +750,7 @@ class Search extends Base
 			$page = 1;
 		}
 		
-		$this->_start = ($page - 1) * $this->_range;
+		$this->start = ($page - 1) * $this->range;
 		
 		return $this;
 	}
@@ -771,7 +769,7 @@ class Search extends Base
 			$range = 25;
 		}
 		
-		$this->_range = $range;
+		$this->range = $range;
 		
 		return $this;
 	}
@@ -790,7 +788,7 @@ class Search extends Base
 			$start = 0;
 		}
 		
-		$this->_start = $start;
+		$this->start = $start;
 		
 		return $this;
 	}
@@ -804,7 +802,7 @@ class Search extends Base
 	public function setTable($table) 
 	{
 		Argument::i()->test(1, 'string');
-		$this->_table = $table;
+		$this->table = $table;
 		return $this;
 	}
 	
@@ -813,11 +811,11 @@ class Search extends Base
 	 * 
 	 * @return string
 	 */
-	protected function _getQuery() 
+	protected function getQuery() 
 	{
-		$query = $this->_database->select()->from($this->_table);
+		$query = $this->database->select()->from($this->table);
 		
-		foreach($this->_join as $join) {
+		foreach($this->join as $join) {
 			if(!is_array($join[2])) {
 				$join[2] = array($join[2]);
 			}
@@ -825,7 +823,7 @@ class Search extends Base
 			$where = array_shift($join[2]);
 			if(!empty($join[2])) {
 				foreach($join[2] as $i => $value) {
-					$join[2][$i] = $this->_database->bind($value);
+					$join[2][$i] = $this->database->bind($value);
 				}
 				
 				$where = vsprintf($where, $join[2]);
@@ -835,12 +833,12 @@ class Search extends Base
 		}
 		
 		
-		foreach($this->_filter as $i => $filter) {
+		foreach($this->filter as $i => $filter) {
 			//array('post_id=%s AND post_title IN %s', 123, array('asd'));
 			$where = array_shift($filter);
 			if(!empty($filter)) {
 				foreach($filter as $i => $value) {
-					$filter[$i] = $this->_database->bind($value);
+					$filter[$i] = $this->database->bind($value);
 				}
 				
 				$where = vsprintf($where, $filter);

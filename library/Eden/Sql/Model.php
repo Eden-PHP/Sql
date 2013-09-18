@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -20,17 +20,17 @@ use Eden\Utility\Model as UtilityModel;
  */
 class Model extends UtilityModel 
 {
-	const COLUMNS 	= 'columns';
-	const PRIMARY 	= 'primary';
-	const DATETIME 	= 'Y-m-d h:i:s';
-	const DATE	 	= 'Y-m-d';
-	const TIME	 	= 'h:i:s';
+	const COLUMNS = 'columns';
+	const PRIMARY = 'primary';
+	const DATETIME = 'Y-m-d h:i:s';
+	const DATE = 'Y-m-d';
+	const TIME = 'h:i:s';
 	const TIMESTAMP	= 'U';
 	
-	protected $_table 		= null;
-	protected $_database 	= null;
+	protected $table = null;
+	protected $database = null;
 	
-	protected static $_meta = array();
+	protected static $meta = array();
 	
 	/**
 	 * Useful method for formating a time column.
@@ -49,29 +49,29 @@ class Model extends UtilityModel
 			->test(2, 'string');	
 		
 		//if the column isn't set
-		if(!isset($this->_data[$column])) {
+		if(!isset($this->data[$column])) {
 			//do nothing more
 			return $this;
 		}
 		
-		if(is_numeric($this->_data[$column])) {
-			$this->_data[$column] = (int) $this->_data[$column];
+		if(is_numeric($this->data[$column])) {
+			$this->data[$column] = (int) $this->data[$column];
 		}
 		
 		//if this is column is a string
-		if(is_string($this->_data[$column])) {
+		if(is_string($this->data[$column])) {
 			//make into time
-			$this->_data[$column] = strtotime($this->_data[$column]);
+			$this->data[$column] = strtotime($this->data[$column]);
 		}
 		
 		//if this column is not an integer
-		if(!is_int($this->_data[$column])) {
+		if(!is_int($this->data[$column])) {
 			//do nothing more
 			return $this;
 		}
 		
 		//set it
-		$this->_data[$column] = date($format, $this->_data[$column]);
+		$this->data[$column] = date($format, $this->data[$column]);
 		
 		return $this;
 	}
@@ -91,30 +91,30 @@ class Model extends UtilityModel
 		//if no table
 		if(is_null($table)) {
 			//if no default table either
-			if(!$this->_table) {
+			if(!$this->table) {
 				//throw error
 				$error->setMessage(Exception::TABLE_NOT_SET)->trigger();
 			}
 			
-			$table = $this->_table;
+			$table = $this->table;
 		}
 		
 		//if no database
 		if(is_null($database)) {
 			//and no default database
-			if(!$this->_database) {
+			if(!$this->database) {
 				$error->setMessage(Exception::DATABASE_NOT_SET)->trigger();
 			}
 			
-			$database = $this->_database;
+			$database = $this->database;
 		}
 		
 		//get the meta data, the valid column values and whether is primary is set
-		$meta = $this->_getMeta($table, $database);
-		$data = $this->_getValidColumns(array_keys($meta[self::COLUMNS]));	
+		$meta = $this->getMeta($table, $database);
+		$data = $this->getValidColumns(array_keys($meta[self::COLUMNS]));	
 		
 		//update original data
-		$this->_original = $this->_data;
+		$this->original = $this->data;
 		
 		//we insert it
 		$database->insertRow($table, $data);
@@ -122,7 +122,7 @@ class Model extends UtilityModel
 		//only if we have 1 primary key
 		if(count($meta[self::PRIMARY]) == 1) {
 			//set the primary key
-			$this->_data[$meta[self::PRIMARY][0]] = $database->getLastInsertedId();	
+			$this->data[$meta[self::PRIMARY][0]] = $database->getLastInsertedId();	
 		}
 		
 		return $this;
@@ -151,27 +151,27 @@ class Model extends UtilityModel
 		//if no table
 		if(is_null($table)) {
 			//if no default table either
-			if(!$this->_table) {
+			if(!$this->table) {
 				//throw error
 				$error->setMessage(Exception::TABLE_NOT_SET)->trigger();
 			}
 			
-			$table = $this->_table;
+			$table = $this->table;
 		}
 		
 		//if no database
 		if(is_null($database)) {
 			//and no default database
-			if(!$this->_database) {
+			if(!$this->database) {
 				$error->setMessage(Exception::DATABASE_NOT_SET)->trigger();
 			}
 			
-			$database = $this->_database;
+			$database = $this->database;
 		}
 		
 		//get the meta data and valid columns
-		$meta = $this->_getMeta($table, $database);
-		$data = $this->_getValidColumns(array_keys($meta[self::COLUMNS]));
+		$meta = $this->getMeta($table, $database);
+		$data = $this->getValidColumns(array_keys($meta[self::COLUMNS]));
 		
 		if(is_null($primary)) {
 			$primary = $meta[self::PRIMARY];
@@ -225,26 +225,26 @@ class Model extends UtilityModel
 		//if no table
 		if(is_null($table)) {
 			//if no default table either
-			if(!$this->_table) {
+			if(!$this->table) {
 				//throw error
 				$error->setMessage(Exception::TABLE_NOT_SET)->trigger();
 			}
 			
-			$table = $this->_table;
+			$table = $this->table;
 		}
 		
 		//if no database
 		if(is_null($database)) {
 			//and no default database
-			if(!$this->_database) {
+			if(!$this->database) {
 				$error->setMessage(Exception::DATABASE_NOT_SET)->trigger();
 			}
 			
-			$database = $this->_database;
+			$database = $this->database;
 		}
 		
 		//get the meta data, the valid column values and whether is primary is set
-		$meta = $this->_getMeta($table, $database);
+		$meta = $this->getMeta($table, $database);
 		
 		if(is_null($primary)) {
 			$primary = $meta[self::PRIMARY];
@@ -254,10 +254,10 @@ class Model extends UtilityModel
 			$primary = array($primary);
 		}
 		
-		$primarySet = $this->_isPrimarySet($primary);	
+		$primarySet = $this->isPrimarySet($primary);	
 		
 		//update original data
-		$this->_original = $this->_data;
+		$this->original = $this->data;
 		
 		//if no primary meta or primary values are not set
 		if(empty($primary) || !$primarySet) {
@@ -274,7 +274,7 @@ class Model extends UtilityModel
 	 * @return Eden\Sql\Model
 	 */
 	public function setDatabase(Database $database) {
-		$this->_database = $database;
+		$this->database = $database;
 		return $this;
 	}
 	
@@ -288,7 +288,7 @@ class Model extends UtilityModel
 		//Argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		$this->_table  = $table;
+		$this->table  = $table;
 		return $this;
 	}
 	
@@ -316,30 +316,30 @@ class Model extends UtilityModel
 		//if no table
 		if(is_null($table)) {
 			//if no default table either
-			if(!$this->_table) {
+			if(!$this->table) {
 				//throw error
 				$error->setMessage(Exception::TABLE_NOT_SET)->trigger();
 			}
 			
-			$table = $this->_table;
+			$table = $this->table;
 		}
 		
 		//if no database
 		if(is_null($database)) {
 			//and no default database
-			if(!$this->_database) {
+			if(!$this->database) {
 				$error->setMessage(Exception::DATABASE_NOT_SET)->trigger();
 			}
 			
-			$database = $this->_database;
+			$database = $this->database;
 		}
 		
 		//get the meta data, the valid column values and whether is primary is set
-		$meta = $this->_getMeta($table, $database);
-		$data = $this->_getValidColumns(array_keys($meta[self::COLUMNS]));	
+		$meta = $this->getMeta($table, $database);
+		$data = $this->getValidColumns(array_keys($meta[self::COLUMNS]));	
 		
 		//update original data
-		$this->_original = $this->_data;
+		$this->original = $this->data;
 		
 		//from here it means that this table has primary 
 		//columns and all primary values are set
@@ -372,31 +372,31 @@ class Model extends UtilityModel
 	 * @param string|null
 	 * @return Eden\Sql\Model
 	 */
-	protected function _isLoaded($table = null, $database = null) 
+	protected function isLoaded($table = null, $database = null) 
 	{
 		//if no table
 		if(is_null($table)) {
 			//if no default table either
-			if(!$this->_table) {
+			if(!$this->table) {
 				return false;
 			}
 			
-			$table = $this->_table;
+			$table = $this->table;
 		}
 		
 		//if no database
 		if(is_null($database)) {
 			//and no default database
-			if(!$this->_database) {
+			if(!$this->database) {
 				return false;
 			}
 			
-			$database = $this->_database;
+			$database = $this->database;
 		}
 		
-		$meta = $this->_getMeta($table, $database);
+		$meta = $this->getMeta($table, $database);
 		
-		return $this->_isPrimarySet($meta[self::PRIMARY]);
+		return $this->isPrimarySet($meta[self::PRIMARY]);
 	}
 	
 	/**
@@ -405,7 +405,7 @@ class Model extends UtilityModel
 	 * @param array
 	 * @return bool
 	 */
-	protected function _isPrimarySet(array $primary) 
+	protected function isPrimarySet(array $primary) 
 	{
 		foreach($primary as $column) {
 			if(is_null($this[$column])) {
@@ -423,7 +423,7 @@ class Model extends UtilityModel
 	 * @param string|null
 	 * @return array
 	 */
-	protected function _getMeta($table, $database) 
+	protected function getMeta($table, $database) 
 	{
 		$uid = spl_object_hash($database);
 		if(isset(self::$_meta[$uid][$table])) {
@@ -457,20 +457,18 @@ class Model extends UtilityModel
 	 * @param array
 	 * @return array
 	 */
-	protected function _getValidColumns($columns) 
+	protected function getValidColumns($columns) 
 	{
 		$valid = array();
 		foreach($columns as $column) {
-			if(!isset($this->_data[$column])) {
+			if(!isset($this->data[$column])) {
 				continue;
 			}
 			
-			$valid[$column] = $this->_data[$column];
+			$valid[$column] = $this->data[$column];
 		} 
 		
 		return $valid;
 	}
-	
-	
 }
 

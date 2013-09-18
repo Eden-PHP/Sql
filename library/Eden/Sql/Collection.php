@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -20,9 +20,9 @@ use Eden\Utility\Collection as UtilityCollection;
  */
 class Collection extends UtilityCollection 
 {
-	protected $_model = Database::MODEL;
-	protected $_database = null;
-	protected $_table = null;
+	protected $model = Database::MODEL;
+	protected $database = null;
+	protected $table = null;
 	
 	/**
 	 * Adds a row to the collection
@@ -33,25 +33,25 @@ class Collection extends UtilityCollection
 	public function add($row = array()) 
 	{
 		//Argument 1 must be an array or Eden_Model
-		Argument::i()->test(1, 'array', $this->_model);
+		Argument::i()->test(1, 'array', $this->model);
 		
 		//if it's an array
 		if(is_array($row)) {
 			//make it a model
-			$model = $this->_model;
+			$model = $this->model;
 			$row = $this->$model($row);
 		}
 		
-		if(!is_null($this->_database)) {
-			$row->setDatabase($this->_database);
+		if(!is_null($this->database)) {
+			$row->setDatabase($this->database);
 		}
 		
-		if(!is_null($this->_table)) {
-			$row->setTable($this->_table);
+		if(!is_null($this->table)) {
+			$row->setTable($this->table);
 		}
 		
 		//add it now
-		$this->_list[] = $row;
+		$this->list[] = $row;
 		
 		return $this;
 	}
@@ -64,10 +64,10 @@ class Collection extends UtilityCollection
 	 */
 	public function setDatabase(Database $database) 
 	{
-		$this->_database = $database;
+		$this->database = $database;
 		
 		//for each row
-		foreach($this->_list as $row) {
+		foreach($this->list as $row) {
 			if(!is_object($row) || !method_exists($row, __FUNCTION__)) {
 				continue;
 			}
@@ -95,7 +95,7 @@ class Collection extends UtilityCollection
 				->trigger();
 		}
 		
-		$this->_model = $model;
+		$this->model = $model;
 		return $this;
 	}
 	
@@ -110,10 +110,10 @@ class Collection extends UtilityCollection
 		//Argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		$this->_table = $table;
+		$this->table = $table;
 		
 		//for each row
-		foreach($this->_list as $row) {
+		foreach($this->list as $row) {
 			if(!is_object($row) || !method_exists($row, __FUNCTION__)) {
 				continue;
 			}

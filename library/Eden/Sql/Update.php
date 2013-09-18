@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -18,7 +18,7 @@ namespace Eden\Sql;
  */
 class Update extends Delete 
 {
-	protected $_set = array();
+	protected $set = array();
 	
 	/**
 	 * Returns the string version of the query 
@@ -29,13 +29,13 @@ class Update extends Delete
 	public function getQuery() 
 	{
 		$set = array();
-		foreach($this->_set as $key => $value) {
+		foreach($this->set as $key => $value) {
 			$set[] = "{$key} = {$value}";
 		}
 		
-		return 'UPDATE '. $this->_table 
+		return 'UPDATE '. $this->table 
 		. ' SET ' . implode(', ', $set) 
-		. ' WHERE '. implode(' AND ', $this->_where).';';
+		. ' WHERE '. implode(' AND ', $this->where).';';
 	}
 	
 	/**
@@ -61,7 +61,7 @@ class Update extends Delete
 			$value = $value ? 1 : 0;
 		}
 		
-		$this->_set[$key] = $value;
+		$this->set[$key] = $value;
 		
 		return $this;
 	}	

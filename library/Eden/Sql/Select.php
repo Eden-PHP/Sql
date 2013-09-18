@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -18,14 +18,14 @@ namespace Eden\Sql;
  */
 class Select extends Query 
 {
-	protected $_select 	= null;
-	protected $_from 	= null;
-	protected $_joins 	= null;
-	protected $_where 	= array();
-	protected $_sortBy	= array();
-	protected $_group	= array();
-	protected $_page 	= null;
-	protected $_length	= null;
+	protected $select 	= null;
+	protected $from 	= null;
+	protected $joins 	= null;
+	protected $where 	= array();
+	protected $sortBy	= array();
+	protected $group	= array();
+	protected $page 	= null;
+	protected $length	= null;
 	
 	/**
 	 * Construct: Set the columns, if any
@@ -48,7 +48,7 @@ class Select extends Query
 		//Argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		$this->_from = $from;
+		$this->from = $from;
 		return $this;
 	}
 	
@@ -60,15 +60,15 @@ class Select extends Query
 	 */
 	public function getQuery() 
 	{
-		$joins = empty($this->_joins) ? '' : implode(' ', $this->_joins);
-		$where = empty($this->_where) ? '' : 'WHERE '.implode(' AND ', $this->_where);
-		$sort = empty($this->_sortBy) ? '' : 'ORDER BY '.implode(', ', $this->_sortBy);
-		$limit = is_null($this->_page) ? '' : 'LIMIT ' . $this->_page .',' .$this->_length;
-		$group = empty($this->_group) ? '' : 'GROUP BY ' . implode(', ', $this->_group);
+		$joins = empty($this->joins) ? '' : implode(' ', $this->joins);
+		$where = empty($this->where) ? '' : 'WHERE '.implode(' AND ', $this->where);
+		$sort = empty($this->sortBy) ? '' : 'ORDER BY '.implode(', ', $this->sortBy);
+		$limit = is_null($this->page) ? '' : 'LIMIT ' . $this->page .',' .$this->length;
+		$group = empty($this->group) ? '' : 'GROUP BY ' . implode(', ', $this->group);
 		
 		$query = sprintf(
 			'SELECT %s FROM %s %s %s %s %s %s;',
-			$this->_select, $this->_from, $joins,
+			$this->select, $this->from, $joins,
 			$where, $group, $sort, $limit);
 		
 		return str_replace('  ', ' ', $query);
@@ -89,7 +89,7 @@ class Select extends Query
 			$group = array($group); 
 		}
 		
-		$this->_group = $group; 
+		$this->group = $group; 
 		return $this;
 	}
 	
@@ -139,7 +139,7 @@ class Select extends Query
 			->test(4, 'bool'); 		
 		
 		$linkage = $using ? 'USING ('.$where.')' : ' ON ('.$where.')';
-		$this->_joins[] = $type.' JOIN ' . $table . ' ' . $linkage;
+		$this->joins[] = $type.' JOIN ' . $table . ' ' . $linkage;
 		
 		return $this;
 	}
@@ -182,8 +182,8 @@ class Select extends Query
 			//Argument 2 must be a number
 			->test(2, 'numeric');	
 		
-		$this->_page = $page;
-		$this->_length = $length; 
+		$this->page = $page;
+		$this->length = $length; 
 
 		return $this;
 	}
@@ -249,7 +249,7 @@ class Select extends Query
 			$select = implode(', ', $select);
 		}
 		
-		$this->_select = $select;
+		$this->select = $select;
 		
 		return $this;
 	}
@@ -270,7 +270,7 @@ class Select extends Query
 			//Argument 2 must be a string
 			->test(2, 'string'); 	
 		
-		$this->_sortBy[] = $field . ' ' . $order;
+		$this->sortBy[] = $field . ' ' . $order;
 		
 		return $this;
 	}
@@ -290,7 +290,7 @@ class Select extends Query
 			$where = array($where);
 		}
 		
-		$this->_where = array_merge($this->_where, $where); 
+		$this->where = array_merge($this->where, $where); 
 		
 		return $this;
 	}	

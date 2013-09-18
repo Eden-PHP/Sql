@@ -1,6 +1,6 @@
 <?php //-->
 /*
- * This file is part of the Utility package of the Eden PHP Library.
+ * This file is part of the Sql package of the Eden PHP Library.
  * (c) 2013-2014 Openovate Labs
  *
  * Copyright and license information can be found at LICENSE
@@ -30,12 +30,12 @@ abstract class Database extends CoreEvent
 	const MODEL = '\\Eden\\Sql\\Model';
 	const COLLECTION = '\\Eden\\Sql\\Collection';
 	
-	protected $_queries = array();
-	protected $_connection = null;
-	protected $_binds = array();
+	protected $queries = array();
+	protected $connection = null;
+	protected $binds = array();
 	
-	protected $_model = self::MODEL;
-	protected $_collection = self::COLLECTION;
+	protected $model = self::MODEL;
+	protected $collection = self::COLLECTION;
 	
 	/**
 	 * Connects to the database
@@ -66,8 +66,8 @@ abstract class Database extends CoreEvent
 			return $value;
 		}
 		
-		$name = ':bind'.count($this->_binds).'bind';
-		$this->_binds[$name] = $value;
+		$name = ':bind'.count($this->binds).'bind';
+		$this->binds[$name] = $value;
 		return $name;
 	}
 	
@@ -79,11 +79,11 @@ abstract class Database extends CoreEvent
 	 */
 	public function collection(array $data = array()) 
 	{
-		$collection = trim(str_replace('\\', '_', $this->_collection), '_');
+		$collection = trim(str_replace('\\', '_', $this->collection), '_');
 		
 		return $this->$collection()
 			->setDatabase($this)
-			->setModel($this->_model)
+			->setModel($this->model)
 			->set($data);
 	}
 	
@@ -153,7 +153,7 @@ abstract class Database extends CoreEvent
 	 */
 	public function getBinds() 
 	{
-		return $this->_binds;
+		return $this->binds;
 	}
 	
 	/**
@@ -165,11 +165,11 @@ abstract class Database extends CoreEvent
 	 */
 	public function getConnection() 
 	{
-		if(!$this->_connection) {
+		if(!$this->connection) {
 			$this->connect();
 		}
 		
-		return $this->_connection;
+		return $this->connection;
 	}
 	
 	/**
@@ -225,7 +225,7 @@ abstract class Database extends CoreEvent
 		//if no index
 		if(is_null($index)) {
 			//return all the queries
-			return $this->_queries;
+			return $this->queries;
 		}
 		
 		//is it the first?
@@ -235,13 +235,13 @@ abstract class Database extends CoreEvent
 		//is it the last?
 		} else if($index == self::LAST) {
 			//set index to the last one
-			$index = count($this->_queries) - 1;
+			$index = count($this->queries) - 1;
 		}
 		
 		//if we have that record
-		if(isset($this->_queries[$index])) {
+		if(isset($this->queries[$index])) {
 			//return it
-			return $this->_queries[$index];
+			return $this->queries[$index];
 		}
 		
 		return null;
@@ -407,7 +407,7 @@ abstract class Database extends CoreEvent
 	 */
 	public function model(array $data = array()) 
 	{
-		$model = trim(str_replace('\\', '_', $this->_model), '_');
+		$model = trim(str_replace('\\', '_', $this->model), '_');
 		return $this->$model($data)->setDatabase($this);
 	}
 	
@@ -452,13 +452,13 @@ abstract class Database extends CoreEvent
 		$results = $stmt->fetchAll( PDO::FETCH_ASSOC );
 		
 		//log query
-		$this->_queries[] = array(
+		$this->queries[] = array(
 			'query' 	=> $query,
 			'binds' 	=> $binds,
 			'results' 	=> $results);
 		
 		//clear binds
-		$this->_binds = array();
+		$this->binds = array();
 		
 		//event trigger
 		$this->trigger('sql-query', $query, $binds, $results);
@@ -478,8 +478,8 @@ abstract class Database extends CoreEvent
 		Argument::i()->test(1, 'string', 'null');
 		
 		$search = Search::i($this)
-			->setCollection($this->_collection)
-			->setModel($this->_model);
+			->setCollection($this->collection)
+			->setModel($this->model);
 		
 		if($table) {
 			$search->setTable($table);
@@ -510,7 +510,7 @@ abstract class Database extends CoreEvent
 	 */
 	public function setBinds(array $binds)
 	{
-		$this->_binds = $binds;
+		$this->binds = $binds;
 		return $this;
 	}
 	
@@ -531,7 +531,7 @@ abstract class Database extends CoreEvent
 				->trigger();
 		}
 		
-		$this->_collection = $collection;
+		$this->collection = $collection;
 		return $this;
 	}
 	
@@ -552,7 +552,7 @@ abstract class Database extends CoreEvent
 				->trigger();
 		}
 		
-		$this->_model = $model;
+		$this->model = $model;
 		return $this;
 	}
 	

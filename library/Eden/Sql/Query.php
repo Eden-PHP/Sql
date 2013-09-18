@@ -9,6 +9,8 @@
 
 namespace Eden\Sql;
 
+use Eden\Core\Base as CoreBase;
+
 /**
  * Generates select query string syntax
  *
@@ -16,7 +18,7 @@ namespace Eden\Sql;
  * @package Sql
  * @author     Christian Blanquera cblanquera@openovate.com
  */
-abstract class Query extends Eden_Class 
+abstract class Query extends CoreBase 
 {
 	/**
 	 * Transform class to string using 

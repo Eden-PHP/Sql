@@ -80,10 +80,10 @@ class Model extends UtilityModel
 	 * Inserts model to database
 	 *
 	 * @param string
-	 * @param Eden\Sql\Database
+	 * @param Eden\Sql\Factory
 	 * @return Eden\Sql\Model
 	 */
-	public function insert($table = null, Database $database = null) 
+	public function insert($table = null, Factory $database = null) 
 	{
 		//Argument 1 must be a string
 		$error = Argument::i()->test(1, 'string', 'null');
@@ -132,7 +132,7 @@ class Model extends UtilityModel
 	 * Removes model from database
 	 *
 	 * @param string
-	 * @param Eden\Sql\Database
+	 * @param Eden\Sql\Factory
 	 * @param string|array|null
 	 * @return this
 	 */
@@ -205,18 +205,18 @@ class Model extends UtilityModel
 	 * Inserts or updates model to database
 	 *
 	 * @param string
-	 * @param Eden_Sql_Database
+	 * @param Eden\Sql\Factory
 	 * @param string|array|null
 	 * @param string|null
 	 * @return Eden\Sql\Model
 	 */
 	public function save(
 		$table = null, 
-		Eden_Sql_Database $database = null, 
+		Factory $database = null, 
 		$primary = null) 
 	{
 		//argument test
-		$error = Argument::i()
+		Argument::i()
 			//Argument 1 must be a string or null
 			->test(1, 'string', 'null')
 			//Argument 1 must be a string or null
@@ -227,7 +227,7 @@ class Model extends UtilityModel
 			//if no default table either
 			if(!$this->table) {
 				//throw error
-				$error->setMessage(Exception::TABLE_NOT_SET)->trigger();
+				Exception::i()->setMessage(Exception::TABLE_NOT_SET)->trigger();
 			}
 			
 			$table = $this->table;
@@ -237,7 +237,7 @@ class Model extends UtilityModel
 		if(is_null($database)) {
 			//and no default database
 			if(!$this->database) {
-				$error->setMessage(Exception::DATABASE_NOT_SET)->trigger();
+				Exception::i()->setMessage(Exception::DATABASE_NOT_SET)->trigger();
 			}
 			
 			$database = $this->database;
@@ -270,10 +270,10 @@ class Model extends UtilityModel
 	/**
 	 * Sets the default database
 	 *
-	 * @param Eden\Sql\Database
+	 * @param Eden\Sql\Factory
 	 * @return Eden\Sql\Model
 	 */
-	public function setDatabase(Database $database) {
+	public function setDatabase(Factory $database) {
 		$this->database = $database;
 		return $this;
 	}
@@ -296,14 +296,13 @@ class Model extends UtilityModel
 	 * Updates model to database
 	 *
 	 * @param string
-	 * @param Eden_Sql_Database
+	 * @param Eden\Sql\Factory
 	 * @param string|array|null
-	 * @param string|null
 	 * @return Eden\Sql\Model
 	 */
 	public function update(
 		$table = null, 
-		Eden_Sql_Database $database = null, 
+		Factory $database = null, 
 		$primary = null) 
 	{
 		//argument test
@@ -311,7 +310,7 @@ class Model extends UtilityModel
 			//Argument 1 must be a string or null
 			->test(1, 'string', 'null')
 			//Argument 1 must be a string or null
-			->test(3, 'string', 'null');
+			->test(3, 'string', 'null', 'array');
 		
 		//if no table
 		if(is_null($table)) {
@@ -426,8 +425,8 @@ class Model extends UtilityModel
 	protected function getMeta($table, $database) 
 	{
 		$uid = spl_object_hash($database);
-		if(isset(self::$_meta[$uid][$table])) {
-			return self::$_meta[$uid][$table];
+		if(isset(self::$meta[$uid][$table])) {
+			return self::$meta[$uid][$table];
 		}
 		
 		$columns = $database->getColumns($table);
@@ -445,7 +444,7 @@ class Model extends UtilityModel
 			}
 		}
 		
-		self::$_meta[$uid][$table] = $meta;
+		self::$meta[$uid][$table] = $meta;
 		
 		return $meta;
 	}

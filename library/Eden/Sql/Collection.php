@@ -20,7 +20,7 @@ use Eden\Utility\Collection as UtilityCollection;
  */
 class Collection extends UtilityCollection 
 {
-	protected $model = Database::MODEL;
+	protected $model = Factory::MODEL;
 	protected $database = null;
 	protected $table = null;
 	
@@ -38,7 +38,7 @@ class Collection extends UtilityCollection
 		//if it's an array
 		if(is_array($row)) {
 			//make it a model
-			$model = $this->model;
+			$model = trim(str_replace('\\', '_', $this->model), '_');
 			$row = $this->$model($row);
 		}
 		
@@ -59,10 +59,10 @@ class Collection extends UtilityCollection
 	/**
 	 * Sets the default database
 	 *
-	 * @param Eden\Sql\Database
+	 * @param Eden\Sql\Factory
 	 * @return Eden\Sql\Collection
 	 */
-	public function setDatabase(Database $database) 
+	public function setDatabase(Factory $database) 
 	{
 		$this->database = $database;
 		
@@ -87,10 +87,12 @@ class Collection extends UtilityCollection
 	 */
 	public function setModel($model) 
 	{
-		$error = Argument::i()->test(1, 'string');
+		Argument::i()->test(1, 'string');
 		
-		if(!is_subclass_of($model, 'Eden_Model')) {
-			$error->setMessage(Exception::NOT_SUB_MODEL)
+		if($model != Factory::MODEL 
+		&& !is_subclass_of($model, Factory::MODEL)) {
+			Exception::i()
+				->setMessage(Exception::NOT_SUB_MODEL)
 				->addVariable($model)
 				->trigger();
 		}

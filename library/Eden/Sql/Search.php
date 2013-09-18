@@ -9,7 +9,7 @@
 
 namespace Eden\Sql;
 
-use Eden\Utility\Type\String as UtilityTypeString;
+use Eden\Utility\Type\StringType as UtilityTypeString;
 
 /**
  * Sql Search
@@ -37,8 +37,8 @@ class Search extends Base
 	protected $start = 0;
 	protected $range = 0;
 	
-	protected $model = Database::MODEL;
-	protected $collection = Database::COLLECTION;
+	protected $model = Factory::MODEL;
+	protected $collection = Factory::COLLECTION;
 	
 	/**
 	 * Magical processing of sortBy 
@@ -121,9 +121,9 @@ class Search extends Base
 	/**
 	 * Construct: Store database
 	 *
-	 * @param Eden\Sql\Database
+	 * @param Eden\Sql\Factory
 	 */
-	public function __construct(Database $database) 
+	public function __construct(Factory $database) 
 	{
 		$this->database = $database;
 	}
@@ -369,7 +369,7 @@ class Search extends Base
 	 */
 	public function getCollection() 
 	{
-		$collection = $this->collection;
+		$collection = trim(str_replace('\\', '_', $this->collection), '_');
 		return $this->$collection()
 			->setDatabase($this->database)
 			->setTable($this->table)
@@ -685,10 +685,12 @@ class Search extends Base
 	public function setCollection($collection) 
 	{
 		//Argument 1 must be a string
-		$error = Argument::i()->test(1, 'string');
+		Argument::i()->test(1, 'string');
 		
-		if(!is_subclass_of($collection, Database::COLLECTION)) {
-			$error->setMessage(Exception::NOT_SUB_COLLECTION)
+		if($collection != Factory::COLLECTION 
+		&& !is_subclass_of($collection, Factory::COLLECTION)) {
+			Exception::i()
+				->setMessage(Exception::NOT_SUB_COLLECTION)
 				->addVariable($collection)
 				->trigger();
 		}
@@ -724,10 +726,12 @@ class Search extends Base
 	 */
 	public function setModel($model) 
 	{
-		$error = Argument::i()->test(1, 'string');
+		Argument::i()->test(1, 'string');
 		
-		if(!is_subclass_of($model, Database::MODEL)) {
-			$error->setMessage(Exception::NOT_SUB_MODEL)
+		if($model != Factory::MODEL 
+		&& !is_subclass_of($model, Factory::MODEL)) {
+			Exception::i()
+				->setMessage(Exception::NOT_SUB_MODEL)
 				->addVariable($model)
 				->trigger();
 		}

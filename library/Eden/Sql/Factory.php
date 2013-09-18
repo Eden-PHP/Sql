@@ -22,13 +22,13 @@ use Eden\Core\Event as CoreEvent;
  * @package Sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-abstract class Database extends CoreEvent 
+abstract class Factory extends CoreEvent 
 {
 	const FIRST = 'first';
 	const LAST	= 'last';
-	const QUERY = '\\Eden\\Sql\\Query';
-	const MODEL = '\\Eden\\Sql\\Model';
-	const COLLECTION = '\\Eden\\Sql\\Collection';
+	const QUERY = 'Eden\\Sql\\Query';
+	const MODEL = 'Eden\\Sql\\Model';
+	const COLLECTION = 'Eden\\Sql\\Collection';
 	
 	protected $queries = array();
 	protected $connection = null;
@@ -41,7 +41,7 @@ abstract class Database extends CoreEvent
 	 * Connects to the database
 	 * 
 	 * @param array the connection options
-	 * @return Eden\Sql\Database
+	 * @return Eden\Sql\Factory
 	 */
 	abstract public function connect(array $options = array());
 	
@@ -120,22 +120,41 @@ abstract class Database extends CoreEvent
 		
 		//array('post_id=%s AND post_title IN %s', 123, array('asd'));
 		if(is_array($filters)) {
-			$format = array_shift($filters);
-			
-			//reindex filters
-			$filters = array_values($filters);
-			
-			//bind filters
-			foreach($filters as $i => $value) {
-				$filters[$i] = $this->bind($value);
+			//can be array of arrays
+			if(is_array($filters[0])) {
+				foreach($filters as $i => $filter) {
+					if(is_array($filters)) {
+						$format = array_shift($filter);
+						
+						//reindex filters
+						$filter = array_values($filter);
+						
+						//bind filters
+						foreach($filter as $i => $value) {
+							$filter[$i] = $this->bind($value);
+						}
+						
+						//combine
+						$query->where(vsprintf($format, $filter));
+					}
+				}
+			} else {
+				$format = array_shift($filters);
+				
+				//reindex filters
+				$filters = array_values($filters);
+				
+				//bind filters
+				foreach($filters as $i => $value) {
+					$filters[$i] = $this->bind($value);
+				}
+				
+				//combine
+				$query->where(vsprintf($format, $filters));
 			}
-			
-			//combine
-			$filters = vsprintf($format, $filters);
+		} else {
+			$query->where($filters);
 		}
-		
-		//add filters to where clause
-		$query->where($filters);
 		
 		//run the query
 		$this->query($query, $this->getBinds());	
@@ -307,7 +326,7 @@ abstract class Database extends CoreEvent
 	 * @param string table
 	 * @param array setting
 	 * @param bool|array
-	 * @return Eden\Sql\Database
+	 * @return Eden\Sql\Factory
 	 */
 	public function insertRow($table, array $settings, $bind = true) 
 	{
@@ -344,7 +363,7 @@ abstract class Database extends CoreEvent
 		$this->query($query, $this->getBinds());	
 		
 		//event trigger
-		$this->trigger('sql-insert', $table, $setting);
+		$this->trigger('sql-insert', $table, $settings);
 		
 		return $this;
 	}
@@ -355,7 +374,7 @@ abstract class Database extends CoreEvent
 	 * @param string table
 	 * @param array settings
 	 * @param bool|array
-	 * @return Eden\Sql\Database
+	 * @return Eden\Sql\Factory
 	 */
 	public function insertRows($table, array $settings, $bind = true) 
 	{
@@ -449,7 +468,7 @@ abstract class Database extends CoreEvent
 				->trigger();
 		}
 		
-		$results = $stmt->fetchAll( PDO::FETCH_ASSOC );
+		$results = $stmt->fetchAll( \PDO::FETCH_ASSOC );
 		
 		//log query
 		$this->queries[] = array(
@@ -506,7 +525,7 @@ abstract class Database extends CoreEvent
 	 * Sets all the bound values of this query
 	 *
 	 * @param array
-	 * @return Eden\Sql\Database
+	 * @return Eden\Sql\Factory
 	 */
 	public function setBinds(array $binds)
 	{
@@ -518,15 +537,17 @@ abstract class Database extends CoreEvent
 	 * Sets default collection
 	 *
 	 * @param string
-	 * @return Eden\Sql\Database
+	 * @return Eden\Sql\Factory
 	 */
 	public function setCollection($collection) 
 	{
 		//Argument 1 must be a string
-		$error = Argument::i()->test(1, 'string');
+		Argument::i()->test(1, 'string');
 		
-		if(!is_subclass_of($collection, self::COLLECTION)) {
-			$error->setMessage(Exception::NOT_SUB_COLLECTION)
+		if($collection != self::COLLECTION 
+		&& !is_subclass_of($collection, self::COLLECTION)) {
+			Exception::i()
+				->setMessage(Exception::NOT_SUB_COLLECTION)
 				->addVariable($collection)
 				->trigger();
 		}
@@ -539,15 +560,17 @@ abstract class Database extends CoreEvent
 	 * Sets the default model
 	 *
 	 * @param string
-	 * @return Eden\Sql\Database
+	 * @return Eden\Sql\Factory
 	 */
 	public function setModel($model) 
 	{
 		//Argument 1 must be a string
-		$error = Argument::i()->test(1, 'string');
+		Argument::i()->test(1, 'string');
 		
-		if(!is_subclass_of($model, self::MODEL)) {
-			$error->setMessage(Exception::NOT_SUB_MODEL)
+		if($model != self::MODEL 
+		&& !is_subclass_of($model, self::MODEL)) {
+			Exception::i()
+				->setMessage(Exception::NOT_SUB_MODEL)
 				->addVariable($model)
 				->trigger();
 		}
@@ -563,7 +586,7 @@ abstract class Database extends CoreEvent
 	 * @param string name
 	 * @param string value
 	 * @param array setting
-	 * @return Eden\Sql\Database
+	 * @return Eden\Sql\Factory
 	 */
 	public function setRow($table, $name, $value, array $setting) 
 	{
@@ -610,7 +633,7 @@ abstract class Database extends CoreEvent
 	 * @param array filter
 	 * @return var
 	 */
-	public function updateRows($table, array $setting, $filters = null, $bind = true) 
+	public function updateRows($table, array $settings, $filters = null, $bind = true) 
 	{
 		//argument test
 		Argument::i()
@@ -645,27 +668,47 @@ abstract class Database extends CoreEvent
 		
 		//array('post_id=%s AND post_title IN %s', 123, array('asd'));
 		if(is_array($filters)) {
-			$format = array_shift($filters);
-			
-			//reindex filters
-			$filters = array_values($filters);
-			
-			//bind filters
-			foreach($filters as $i => $value) {
-				$filters[$i] = $this->bind($value);
+			//can be array of arrays
+			if(is_array($filters[0])) {
+				foreach($filters as $i => $filter) {
+					if(is_array($filters)) {
+						$format = array_shift($filter);
+						
+						//reindex filters
+						$filter = array_values($filter);
+						
+						//bind filters
+						foreach($filter as $i => $value) {
+							$filter[$i] = $this->bind($value);
+						}
+						
+						//combine
+						$query->where(vsprintf($format, $filter));
+					}
+				}
+			} else {
+				$format = array_shift($filters);
+				
+				//reindex filters
+				$filters = array_values($filters);
+				
+				//bind filters
+				foreach($filters as $i => $value) {
+					$filters[$i] = $this->bind($value);
+				}
+				
+				//combine
+				$query->where(vsprintf($format, $filters));
 			}
-			
-			//combine
-			$filters = vsprintf($format, $filters);
+		} else {
+			$query->where($filters);
 		}
-		
-		$query->where($filters);
 		
 		//run the query
 		$this->query($query, $this->getBinds());	
 		
 		//event trigger
-		$this->trigger('sql-update', $table, $setting, $filters);
+		$this->trigger('sql-update', $table, $settings, $filters);
 		
 		return $this;
 	}	

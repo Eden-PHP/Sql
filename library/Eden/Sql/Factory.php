@@ -196,8 +196,12 @@ abstract class Factory extends CoreEvent
 	 *
 	 * @return int the id
 	 */
-	public function getLastInsertedId() 
+	public function getLastInsertedId($column = NULL) 
 	{
+		if(is_string($column)) {
+			return $this->getConnection()->lastInsertId($column);
+		}
+		
 		return $this->getConnection()->lastInsertId();
 	}
 	

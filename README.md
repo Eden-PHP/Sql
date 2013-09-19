@@ -1,4 +1,4 @@
 Sql
 ===
 
-Base SQL class for MySQL, PostGres and SQLite
+Base SQL classes for MySQL, PostGres and SQLite. Not a usable set of classes by itself.

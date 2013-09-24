@@ -9,7 +9,7 @@
 
 namespace Eden\Sql;
 
-use Eden\Utility\Collection as UtilityCollection;
+use Eden\Collection\Base as CollectionBase;
 
 /**
  * Sql Collection handler
@@ -18,7 +18,7 @@ use Eden\Utility\Collection as UtilityCollection;
  * @package Sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Collection extends UtilityCollection 
+class Collection extends CollectionBase 
 {
 	protected $model = Factory::MODEL;
 	protected $database = null;

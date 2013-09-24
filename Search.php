@@ -9,7 +9,7 @@
 
 namespace Eden\Sql;
 
-use Eden\Utility\Type\StringType as UtilityTypeString;
+use Eden\Type\StringType as StringType;
 
 /**
  * Sql Search
@@ -60,7 +60,7 @@ class Search extends Base
 			}
 			
 			//transform method to column name
-			$key = UtilityTypeString::i($name)
+			$key = StringType::i($name)
 				->substr(8)
 				->preg_replace("/([A-Z0-9])/", $separator."$1")
 				->substr(strlen($separator))
@@ -92,7 +92,7 @@ class Search extends Base
 			}
 			
 			//transform method to column name
-			$key = UtilityTypeString::i($name)
+			$key = StringType::i($name)
 				->substr(6)
 				->preg_replace("/([A-Z0-9])/", $separator."$1")
 				->substr(strlen($separator))

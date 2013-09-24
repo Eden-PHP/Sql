@@ -9,7 +9,7 @@
 
 namespace Eden\Sql;
 
-use Eden\Utility\Model as UtilityModel;
+use Eden\Model\Base as ModelBase;
 
 /**
  * Sql Model
@@ -18,7 +18,7 @@ use Eden\Utility\Model as UtilityModel;
  * @package Sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Model extends UtilityModel 
+class Model extends ModelBase 
 {
 	const COLUMNS = 'columns';
 	const PRIMARY = 'primary';

@@ -446,12 +446,20 @@ abstract class Factory extends CoreEvent
 		//Argument 1 must be a string or null
 		Argument::i()->test(1, 'string', self::QUERY);
 		
+		$request = new \stdClass();
+		
+		$request->query = $query;
+		$request->binds = $binds;
+		
+		//event trigger
+		$this->trigger('sql-query-before', $request);
+		
 		$connection = $this->getConnection();
-		$query 		= (string) $query;
+		$query 		= (string) $request->query;
 		$stmt 		= $connection->prepare($query);
 		
 		//bind some more values
-		foreach($binds as $key => $value) {
+		foreach($request->binds as $key => $value) {
 			$stmt->bindValue($key, $value);
 		}
 		
@@ -484,7 +492,7 @@ abstract class Factory extends CoreEvent
 		$this->binds = array();
 		
 		//event trigger
-		$this->trigger('sql-query', $query, $binds, $results);
+		$this->trigger('sql-query-after', $query, $binds, $results);
 		
 		return $results;
 	}

@@ -24,6 +24,8 @@ use Eden\Core\Event as CoreEvent;
  */
 abstract class Factory extends CoreEvent 
 {
+	const INSTANCE = 0;
+	
 	const FIRST = 'first';
 	const LAST	= 'last';
 	const QUERY = 'Eden\\Sql\\Query';

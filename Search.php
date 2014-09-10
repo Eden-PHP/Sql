@@ -74,7 +74,11 @@ class Search extends Base
 			}
 			
 			//generate key
-			$key = $key.'=%s';
+			if (is_array($args[0])) {
+				$key = $key.' IN %s';
+			} else {
+				$key = $key.'=%s';
+			}
 				
 			//add it to the search filter
 			$this->addFilter($key, $args[0]);

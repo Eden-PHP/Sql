@@ -64,7 +64,7 @@ abstract class Factory extends CoreEvent
 			}
 			
 			return '('.implode(",",$value).')';
-		} else if(is_numeric($value)) {
+		} else if(is_int($value) || ctype_digit($value)) {
 			return $value;
 		}
 		

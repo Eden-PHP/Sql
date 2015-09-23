@@ -9,21 +9,19 @@
 
 namespace Eden\Sql;
 
-use Eden\Core\Exception as CoreException;
-
 /**
  * Sql Errors
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Exception extends CoreException
+class Exception extends \Eden\Core\Exception
 {
 	const QUERY_ERROR 		= '%s Query: %s';
 	const TABLE_NOT_SET 	= 'No default table set or was passed.';
 	const DATABASE_NOT_SET 	= 'No default database set or was passed.';
 	
-	const NOT_SUB_MODEL 		= 'Class %s is not a child of Eden\\Utility\\Model';
-	const NOT_SUB_COLLECTION 	= 'Class %s is not a child of Eden\\Utility\\Collection';
+	const NOT_SUB_MODEL 		= 'Class %s is not a child of Eden\\Model\\Index';
+	const NOT_SUB_COLLECTION 	= 'Class %s is not a child of Eden\\Collection\\Index';
 }

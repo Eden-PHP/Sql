@@ -9,18 +9,16 @@
 
 namespace Eden\Sql;
 
-use Eden\Collection\Base as CollectionBase;
-
 /**
  * Sql Collection handler
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Collection extends CollectionBase 
+class Collection extends \Eden\Collection\Index 
 {
-	protected $model = Factory::MODEL;
+	protected $model = Index::MODEL;
 	protected $database = null;
 	protected $table = null;
 	
@@ -28,7 +26,7 @@ class Collection extends CollectionBase
 	 * Adds a row to the collection
 	 *
 	 * @param array|Eden_Model
-	 * @return Eden\Sql\Collection
+	 * @return this
 	 */
 	public function add($row = array()) 
 	{
@@ -59,10 +57,10 @@ class Collection extends CollectionBase
 	/**
 	 * Sets the default database
 	 *
-	 * @param Eden\Sql\Factory
-	 * @return Eden\Sql\Collection
+	 * @param Eden\Sql\Index
+	 * @return this
 	 */
-	public function setDatabase(Factory $database) 
+	public function setDatabase(Index $database) 
 	{
 		$this->database = $database;
 		
@@ -83,14 +81,14 @@ class Collection extends CollectionBase
 	 * Sets default model
 	 *
 	 * @param string
-	 * @return Eden\Sql\Collection
+	 * @return this
 	 */
 	public function setModel($model) 
 	{
 		Argument::i()->test(1, 'string');
 		
-		if($model != Factory::MODEL 
-		&& !is_subclass_of($model, Factory::MODEL)) {
+		if($model != Index::MODEL 
+		&& !is_subclass_of($model, Index::MODEL)) {
 			Exception::i()
 				->setMessage(Exception::NOT_SUB_MODEL)
 				->addVariable($model)
@@ -105,7 +103,7 @@ class Collection extends CollectionBase
 	 * Sets the default database
 	 *
 	 * @param string
-	 * @return Eden\Sql\Collection
+	 * @return this
 	 */
 	public function setTable($table) 
 	{

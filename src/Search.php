@@ -9,13 +9,11 @@
 
 namespace Eden\Sql;
 
-use Eden\Type\StringType as StringType;
-
 /**
  * Sql Search
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
 class Search extends Base 
@@ -37,8 +35,8 @@ class Search extends Base
 	protected $start = 0;
 	protected $range = 0;
 	
-	protected $model = Factory::MODEL;
-	protected $collection = Factory::COLLECTION;
+	protected $model = Index::MODEL;
+	protected $collection = Index::COLLECTION;
 	
 	/**
 	 * Magical processing of sortBy 
@@ -60,7 +58,7 @@ class Search extends Base
 			}
 			
 			//transform method to column name
-			$key = StringType::i($name)
+			$key = \Eden_String_Index::i($name)
 				->substr(8)
 				->preg_replace("/([A-Z0-9])/", $separator."$1")
 				->substr(strlen($separator))
@@ -96,7 +94,7 @@ class Search extends Base
 			}
 			
 			//transform method to column name
-			$key = StringType::i($name)
+			$key = \Eden_String_Index::i($name)
 				->substr(6)
 				->preg_replace("/([A-Z0-9])/", $separator."$1")
 				->substr(strlen($separator))
@@ -117,7 +115,7 @@ class Search extends Base
 		
 		try {
 			return parent::__call($name, $args);
-		} catch(Eden_Error $e) {
+		} catch(\Exception $e) {
 			Exception::i($e->getMessage())->trigger();
 		}
 	}
@@ -125,9 +123,9 @@ class Search extends Base
 	/**
 	 * Construct: Store database
 	 *
-	 * @param Eden\Sql\Factory
+	 * @param Eden\Sql\Index
 	 */
-	public function __construct(Factory $database) 
+	public function __construct(Index $database) 
 	{
 		$this->database = $database;
 	}
@@ -476,7 +474,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function innerJoinOn($table, $where) 
 	{
@@ -500,7 +498,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function innerJoinUsing($table, $where) 
 	{
@@ -524,7 +522,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function leftJoinOn($table, $where) 
 	{
@@ -548,7 +546,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function leftJoinUsing($table, $where) 
 	{
@@ -572,7 +570,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function outerJoinOn($table, $where) 
 	{
@@ -596,7 +594,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function outerJoinUsing($table, $where) 
 	{
@@ -620,7 +618,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function rightJoinOn($table, $where) 
 	{
@@ -644,7 +642,7 @@ class Search extends Base
 	 * 
 	 * @param string
 	 * @param string[,string..]
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function rightJoinUsing($table, $where) 
 	{
@@ -667,7 +665,7 @@ class Search extends Base
 	 * Sets Columns
 	 * 
 	 * @param string[,string..]|array
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setColumns($columns) 
 	{
@@ -684,15 +682,15 @@ class Search extends Base
 	 * Sets default collection
 	 *
 	 * @param string
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setCollection($collection) 
 	{
 		//Argument 1 must be a string
 		Argument::i()->test(1, 'string');
 		
-		if($collection != Factory::COLLECTION 
-		&& !is_subclass_of($collection, Factory::COLLECTION)) {
+		if($collection != Index::COLLECTION 
+		&& !is_subclass_of($collection, Index::COLLECTION)) {
 			Exception::i()
 				->setMessage(Exception::NOT_SUB_COLLECTION)
 				->addVariable($collection)
@@ -707,12 +705,12 @@ class Search extends Base
 	 * Group by clause
 	 *
 	 * @param string group
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setGroup($group) 
 	{
-		 //Argument 1 must be a string or array
-		 Argument::i()->test(1, 'string', 'array');	
+		//Argument 1 must be a string or array
+		Argument::i()->test(1, 'string', 'array');	
 			
 		if(is_string($group)) {
 			$group = array($group); 
@@ -726,14 +724,14 @@ class Search extends Base
 	 * Sets default model
 	 *
 	 * @param string
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setModel($model) 
 	{
 		Argument::i()->test(1, 'string');
 		
-		if($model != Factory::MODEL 
-		&& !is_subclass_of($model, Factory::MODEL)) {
+		if($model != Index::MODEL 
+		&& !is_subclass_of($model, Index::MODEL)) {
 			Exception::i()
 				->setMessage(Exception::NOT_SUB_MODEL)
 				->addVariable($model)
@@ -748,7 +746,7 @@ class Search extends Base
 	 * Sets the pagination page
 	 *
 	 * @param int
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setPage($page) 
 	{
@@ -767,7 +765,7 @@ class Search extends Base
 	 * Sets the pagination range
 	 *
 	 * @param int
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setRange($range) 
 	{
@@ -786,7 +784,7 @@ class Search extends Base
 	 * Sets the pagination start
 	 *
 	 * @param int
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setStart($start) 
 	{
@@ -805,7 +803,7 @@ class Search extends Base
 	 * Sets Table
 	 * 
 	 * @param string
-	 * @return Eden\Sql\Search
+	 * @return this
 	 */
 	public function setTable($table) 
 	{
@@ -839,7 +837,6 @@ class Search extends Base
 			
 			$query->join($join[0], $join[1], $where, $join[3]);
 		}
-		
 		
 		foreach($this->filter as $i => $filter) {
 			//array('post_id=%s AND post_title IN %s', 123, array('asd'));

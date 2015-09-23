@@ -13,7 +13,7 @@ namespace Eden\Sql;
  * Generates insert query string syntax
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author     Christian Blanquera cblanquera@openovate.com
  */
 class Insert extends Query 
@@ -61,7 +61,7 @@ class Insert extends Query
 	 *
 	 * @param string
 	 * @param string
-	 * @return Eden\Sql\Insert
+	 * @return this
 	 */
 	public function set($key, $value, $index = 0) 
 	{
@@ -90,7 +90,7 @@ class Insert extends Query
 	 * Set the table name in which you want to delete from
 	 *
 	 * @param string name
-	 * @return Eden\Sql\Insert
+	 * @return this
 	 */
 	public function setTable($table) 
 	{

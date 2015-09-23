@@ -13,7 +13,7 @@ namespace Eden\Sql;
  * Generates update query string syntax
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
 class Update extends Delete 

@@ -9,16 +9,14 @@
 
 namespace Eden\Sql;
 
-use Eden\Model\Base as ModelBase;
-
 /**
  * Sql Model
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-class Model extends ModelBase 
+class Model extends \Eden\Model\Index 
 {
 	const COLUMNS = 'columns';
 	const PRIMARY = 'primary';
@@ -80,10 +78,10 @@ class Model extends ModelBase
 	 * Inserts model to database
 	 *
 	 * @param string
-	 * @param Eden\Sql\Factory
-	 * @return Eden\Sql\Model
+	 * @param Eden\Sql\Index
+	 * @return this
 	 */
-	public function insert($table = null, Factory $database = null) 
+	public function insert($table = null, Index $database = null) 
 	{
 		//Argument 1 must be a string
 		$error = Argument::i()->test(1, 'string', 'null');
@@ -132,13 +130,13 @@ class Model extends ModelBase
 	 * Removes model from database
 	 *
 	 * @param string
-	 * @param Eden\Sql\Factory
+	 * @param Eden\Sql\Index
 	 * @param string|array|null
 	 * @return this
 	 */
 	public function remove(
 		$table = null, 
-		Database $database = null, 
+		Index $database = null, 
 		$primary = null) 
 	{
 		//Argument test
@@ -205,14 +203,14 @@ class Model extends ModelBase
 	 * Inserts or updates model to database
 	 *
 	 * @param string
-	 * @param Eden\Sql\Factory
+	 * @param Eden\Sql\Index
 	 * @param string|array|null
 	 * @param string|null
-	 * @return Eden\Sql\Model
+	 * @return this
 	 */
 	public function save(
 		$table = null, 
-		Factory $database = null, 
+		Index $database = null, 
 		$primary = null) 
 	{
 		//argument test
@@ -270,10 +268,10 @@ class Model extends ModelBase
 	/**
 	 * Sets the default database
 	 *
-	 * @param Eden\Sql\Factory
-	 * @return Eden\Sql\Model
+	 * @param Eden\Sql\Index
+	 * @return this
 	 */
-	public function setDatabase(Factory $database) {
+	public function setDatabase(Index $database) {
 		$this->database = $database;
 		return $this;
 	}
@@ -282,7 +280,7 @@ class Model extends ModelBase
 	 * Sets the default database
 	 *
 	 * @param string
-	 * @return Eden\Sql\Model
+	 * @return this
 	 */
 	public function setTable($table) {
 		//Argument 1 must be a string
@@ -296,13 +294,13 @@ class Model extends ModelBase
 	 * Updates model to database
 	 *
 	 * @param string
-	 * @param Eden\Sql\Factory
+	 * @param Eden\Sql\Index
 	 * @param string|array|null
-	 * @return Eden\Sql\Model
+	 * @return this
 	 */
 	public function update(
 		$table = null, 
-		Factory $database = null, 
+		Index $database = null, 
 		$primary = null) 
 	{
 		//argument test
@@ -369,7 +367,7 @@ class Model extends ModelBase
 	 *
 	 * @param string|null
 	 * @param string|null
-	 * @return Eden\Sql\Model
+	 * @return this
 	 */
 	protected function isLoaded($table = null, $database = null) 
 	{
@@ -470,4 +468,3 @@ class Model extends ModelBase
 		return $valid;
 	}
 }
-

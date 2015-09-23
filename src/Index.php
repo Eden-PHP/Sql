@@ -9,8 +9,6 @@
 
 namespace Eden\Sql;
 
-use Eden\Core\Event as CoreEvent;
-
 /**
  * Abstractly defines a layout of available methods to
  * connect to and query a database. This class also lays out 
@@ -19,10 +17,10 @@ use Eden\Core\Event as CoreEvent;
  * needing to know the query language.
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-abstract class Factory extends CoreEvent 
+abstract class Index extends Base 
 {
 	const INSTANCE = 0;
 	
@@ -43,7 +41,7 @@ abstract class Factory extends CoreEvent
 	 * Connects to the database
 	 * 
 	 * @param array the connection options
-	 * @return Eden\Sql\Factory
+	 * @return this
 	 */
 	abstract public function connect(array $options = array());
 	
@@ -332,7 +330,7 @@ abstract class Factory extends CoreEvent
 	 * @param string table
 	 * @param array setting
 	 * @param bool|array
-	 * @return Eden\Sql\Factory
+	 * @return this
 	 */
 	public function insertRow($table, array $settings, $bind = true) 
 	{
@@ -380,7 +378,7 @@ abstract class Factory extends CoreEvent
 	 * @param string table
 	 * @param array settings
 	 * @param bool|array
-	 * @return Eden\Sql\Factory
+	 * @return this
 	 */
 	public function insertRows($table, array $settings, $bind = true) 
 	{
@@ -539,7 +537,7 @@ abstract class Factory extends CoreEvent
 	 * Sets all the bound values of this query
 	 *
 	 * @param array
-	 * @return Eden\Sql\Factory
+	 * @return this
 	 */
 	public function setBinds(array $binds)
 	{
@@ -551,7 +549,7 @@ abstract class Factory extends CoreEvent
 	 * Sets default collection
 	 *
 	 * @param string
-	 * @return Eden\Sql\Factory
+	 * @return this
 	 */
 	public function setCollection($collection) 
 	{
@@ -574,7 +572,7 @@ abstract class Factory extends CoreEvent
 	 * Sets the default model
 	 *
 	 * @param string
-	 * @return Eden\Sql\Factory
+	 * @return this
 	 */
 	public function setModel($model) 
 	{
@@ -600,7 +598,7 @@ abstract class Factory extends CoreEvent
 	 * @param string name
 	 * @param string value
 	 * @param array setting
-	 * @return Eden\Sql\Factory
+	 * @return this
 	 */
 	public function setRow($table, $name, $value, array $setting) 
 	{

@@ -13,7 +13,7 @@ namespace Eden\Sql;
  * Generates select query string syntax
  *
  * @vendor Eden
- * @package Sql
+ * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
 class Select extends Query 
@@ -41,7 +41,7 @@ class Select extends Query
 	 * From clause
 	 *
 	 * @param string from
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function from($from) 
 	{
@@ -78,7 +78,7 @@ class Select extends Query
 	 * Group by clause
 	 *
 	 * @param string group
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function groupBy($group) 
 	{
@@ -99,7 +99,7 @@ class Select extends Query
 	 * @param string table
 	 * @param string where
 	 * @param bool on
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function innerJoin($table, $where, $using = true) 
 	{
@@ -123,7 +123,7 @@ class Select extends Query
 	 * @param string table
 	 * @param string where
 	 * @param bool on
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function join($type, $table, $where, $using = true) 
 	{
@@ -150,7 +150,7 @@ class Select extends Query
 	 * @param string table
 	 * @param string where
 	 * @param bool on
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function leftJoin($table, $where, $using = true) 
 	{
@@ -171,7 +171,7 @@ class Select extends Query
 	 *
 	 * @param string|int page
 	 * @param string|int length
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function limit($page, $length) 
 	{
@@ -194,7 +194,7 @@ class Select extends Query
 	 * @param string table
 	 * @param string where
 	 * @param bool on
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function outerJoin($table, $where, $using = true) 
 	{
@@ -216,7 +216,7 @@ class Select extends Query
 	 * @param string table
 	 * @param string where
 	 * @param bool on
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function rightJoin($table, $where, $using = true)
 	{
@@ -236,7 +236,7 @@ class Select extends Query
 	 * Select clause
 	 *
 	 * @param string select
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function select($select = '*') 
 	{
@@ -259,7 +259,7 @@ class Select extends Query
 	 *
 	 * @param string field
 	 * @param string order
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function sortBy($field, $order = 'ASC') 
 	{
@@ -279,7 +279,7 @@ class Select extends Query
 	 * Where clause
 	 *
 	 * @param array|string where
-	 * @return Eden\Sql\Select
+	 * @return this
 	 */
 	public function where($where) 
 	{

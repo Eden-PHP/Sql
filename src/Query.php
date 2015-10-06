@@ -16,24 +16,24 @@ namespace Eden\Sql;
  * @package sql
  * @author Christian Blanquera cblanquera@openovate.com
  */
-abstract class Query extends Base 
+abstract class Query extends Base
 {
-	/**
-	 * Transform class to string using 
-	 * getQuery
-	 *
-	 * @return string
-	 */
-	public function __toString() 
-	{
-		return $this->getQuery();
-	}
-	
-	/**
-	 * Returns the string version of the query 
-	 *
-	 * @param  bool
-	 * @return string
-	 */
-	abstract public function getQuery();
+    /**
+     * Transform class to string using
+     * getQuery
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getQuery();
+    }
+    
+    /**
+     * Returns the string version of the query
+     *
+     * @param  bool
+     * @return string
+     */
+    abstract public function getQuery();
 }

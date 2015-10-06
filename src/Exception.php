@@ -18,10 +18,10 @@ namespace Eden\Sql;
  */
 class Exception extends \Eden\Core\Exception
 {
-	const QUERY_ERROR 		= '%s Query: %s';
-	const TABLE_NOT_SET 	= 'No default table set or was passed.';
-	const DATABASE_NOT_SET 	= 'No default database set or was passed.';
-	
-	const NOT_SUB_MODEL 		= 'Class %s is not a child of Eden\\Model\\Index';
-	const NOT_SUB_COLLECTION 	= 'Class %s is not a child of Eden\\Collection\\Index';
+    const QUERY_ERROR       = '%s Query: %s';
+    const TABLE_NOT_SET     = 'No default table set or was passed.';
+    const DATABASE_NOT_SET  = 'No default database set or was passed.';
+    
+    const NOT_SUB_MODEL         = 'Class %s is not a child of Eden\\Model\\Index';
+    const NOT_SUB_COLLECTION    = 'Class %s is not a child of Eden\\Collection\\Index';
 }

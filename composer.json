@@ -18,6 +18,7 @@
 		"eden/string": "4.x-dev",
 		"eden/array": "4.x-dev",
         "eden/model": "4.x-dev",
+        "eden/mysql" : "4.x-dev",
         "eden/collection": "4.x-dev"
     },
     "autoload": {

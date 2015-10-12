@@ -16,9 +16,10 @@ namespace Eden\Sql;
  * the specific database will understand without actually
  * needing to know the query language.
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 abstract class Index extends Base
 {
@@ -41,6 +42,7 @@ abstract class Index extends Base
      * Connects to the database
      *
      * @param array the connection options
+     *
      * @return this
      */
     abstract public function connect(array $options = array());
@@ -49,6 +51,7 @@ abstract class Index extends Base
      * Binds a value and returns the bound key
      *
      * @param string|array|number|null
+     *
      * @return string
      */
     public function bind($value)
@@ -75,6 +78,7 @@ abstract class Index extends Base
      * Returns collection
      *
      * @param array
+     *
      * @return Eden\Sql\Collection
      */
     public function collection(array $data = array())
@@ -91,6 +95,7 @@ abstract class Index extends Base
      * Returns the delete query builder
      *
      * @param string|null
+     *
      * @return Eden\Sql\Delete
      */
     public function delete($table = null)
@@ -106,6 +111,7 @@ abstract class Index extends Base
      *
      * @param string table
      * @param array filter
+     *
      * @return Eden\Sql\Collection
      */
     public function deleteRows($table, $filters = null)
@@ -211,6 +217,7 @@ abstract class Index extends Base
      * @param string table
      * @param string name
      * @param scalar|null value
+     *
      * @return Eden\Sql\Model|null
      */
     public function getModel($table, $name, $value)
@@ -238,6 +245,7 @@ abstract class Index extends Base
      * Returns the history of queries made still in memory
      *
      * @param int|string|null
+     *
      * @return array|null the queries
      */
     public function getQueries($index = null)
@@ -276,6 +284,7 @@ abstract class Index extends Base
      * @param string table
      * @param string name
      * @param string value
+     *
      * @return array|null
      */
     public function getRow($table, $name, $value)
@@ -314,6 +323,7 @@ abstract class Index extends Base
      * Returns the insert query builder
      *
      * @param string|null
+     *
      * @return Eden\Sql\Insert
      */
     public function insert($table = null)
@@ -330,6 +340,7 @@ abstract class Index extends Base
      * @param string table
      * @param array setting
      * @param bool|array
+     *
      * @return this
      */
     public function insertRow($table, array $settings, $bind = true)
@@ -378,6 +389,7 @@ abstract class Index extends Base
      * @param string table
      * @param array settings
      * @param bool|array
+     *
      * @return this
      */
     public function insertRows($table, array $settings, $bind = true)
@@ -426,6 +438,7 @@ abstract class Index extends Base
      * Returns model
      *
      * @param array
+     *
      * @return Eden\Sql\Model
      */
     public function model(array $data = array())
@@ -439,6 +452,7 @@ abstract class Index extends Base
      *
      * @param string query
      * @param array binded value
+     *
      * @return array
      */
     public function query($query, array $binds = array())
@@ -501,6 +515,7 @@ abstract class Index extends Base
      * Returns search
      *
      * @param string|null
+     *
      * @return Eden\Sql\Search
      */
     public function search($table = null)
@@ -523,6 +538,7 @@ abstract class Index extends Base
      * Returns the select query builder
      *
      * @param string|array
+     *
      * @return Eden\Sql\Select
      */
     public function select($select = '*')
@@ -537,6 +553,7 @@ abstract class Index extends Base
      * Sets all the bound values of this query
      *
      * @param array
+     *
      * @return this
      */
     public function setBinds(array $binds)
@@ -549,6 +566,7 @@ abstract class Index extends Base
      * Sets default collection
      *
      * @param string
+     *
      * @return this
      */
     public function setCollection($collection)
@@ -572,6 +590,7 @@ abstract class Index extends Base
      * Sets the default model
      *
      * @param string
+     *
      * @return this
      */
     public function setModel($model)
@@ -598,6 +617,7 @@ abstract class Index extends Base
      * @param string name
      * @param string value
      * @param array setting
+     *
      * @return this
      */
     public function setRow($table, $name, $value, array $setting)
@@ -643,6 +663,7 @@ abstract class Index extends Base
      * @param string table
      * @param array setting
      * @param array filter
+     *
      * @return var
      */
     public function updateRows($table, array $settings, $filters = null, $bind = true)

@@ -12,9 +12,10 @@ namespace Eden\Sql;
 /**
  * Sql Model
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Model extends \Eden\Model\Index
 {
@@ -35,6 +36,7 @@ class Model extends \Eden\Model\Index
      *
      * @param string
      * @param string
+     *
      * @return this
      */
     public function formatTime($column, $format = self::DATETIME)
@@ -79,6 +81,7 @@ class Model extends \Eden\Model\Index
      *
      * @param string
      * @param Eden\Sql\Index
+     *
      * @return this
      */
     public function insert($table = null, Index $database = null)
@@ -132,6 +135,7 @@ class Model extends \Eden\Model\Index
      * @param string
      * @param Eden\Sql\Index
      * @param string|array|null
+     *
      * @return this
      */
     public function remove(
@@ -206,6 +210,7 @@ class Model extends \Eden\Model\Index
      * @param Eden\Sql\Index
      * @param string|array|null
      * @param string|null
+     *
      * @return this
      */
     public function save(
@@ -269,6 +274,7 @@ class Model extends \Eden\Model\Index
      * Sets the default database
      *
      * @param Eden\Sql\Index
+     *
      * @return this
      */
     public function setDatabase(Index $database)
@@ -281,6 +287,7 @@ class Model extends \Eden\Model\Index
      * Sets the default database
      *
      * @param string
+     *
      * @return this
      */
     public function setTable($table)
@@ -298,6 +305,7 @@ class Model extends \Eden\Model\Index
      * @param string
      * @param Eden\Sql\Index
      * @param string|array|null
+     *
      * @return this
      */
     public function update(
@@ -369,6 +377,7 @@ class Model extends \Eden\Model\Index
      *
      * @param string|null
      * @param string|null
+     *
      * @return this
      */
     protected function isLoaded($table = null, $database = null)
@@ -402,6 +411,7 @@ class Model extends \Eden\Model\Index
      * Checks to see if we have a primary value/s set
      *
      * @param array
+     *
      * @return bool
      */
     protected function isPrimarySet(array $primary)
@@ -420,6 +430,7 @@ class Model extends \Eden\Model\Index
      *
      * @param string|null
      * @param string|null
+     *
      * @return array
      */
     protected function getMeta($table, $database)
@@ -454,6 +465,7 @@ class Model extends \Eden\Model\Index
      * the partiular table
      *
      * @param array
+     *
      * @return array
      */
     protected function getValidColumns($columns)

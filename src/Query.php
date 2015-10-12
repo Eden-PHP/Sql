@@ -12,9 +12,10 @@ namespace Eden\Sql;
 /**
  * Generates select query string syntax
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 abstract class Query extends Base
 {
@@ -33,6 +34,7 @@ abstract class Query extends Base
      * Returns the string version of the query
      *
      * @param  bool
+     *
      * @return string
      */
     abstract public function getQuery();

@@ -12,9 +12,10 @@ namespace Eden\Sql;
 /**
  * Sql Errors
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Exception extends \Eden\Core\Exception
 {

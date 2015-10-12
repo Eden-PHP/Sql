@@ -12,9 +12,10 @@ namespace Eden\Sql;
 /**
  * Sql Collection handler
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Collection extends \Eden\Collection\Index
 {
@@ -26,6 +27,7 @@ class Collection extends \Eden\Collection\Index
      * Adds a row to the collection
      *
      * @param array|Eden_Model
+     *
      * @return this
      */
     public function add($row = array())
@@ -58,6 +60,7 @@ class Collection extends \Eden\Collection\Index
      * Sets the default database
      *
      * @param Eden\Sql\Index
+     *
      * @return this
      */
     public function setDatabase(Index $database)
@@ -81,6 +84,7 @@ class Collection extends \Eden\Collection\Index
      * Sets default model
      *
      * @param string
+     *
      * @return this
      */
     public function setModel($model)
@@ -103,6 +107,7 @@ class Collection extends \Eden\Collection\Index
      * Sets the default database
      *
      * @param string
+     *
      * @return this
      */
     public function setTable($table)

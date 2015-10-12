@@ -12,9 +12,10 @@ namespace Eden\Sql;
 /**
  * Generates update query string syntax
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Update extends Delete
 {
@@ -24,6 +25,7 @@ class Update extends Delete
      * Returns the string version of the query
      *
      * @param  bool
+     *
      * @return string
      */
     public function getQuery()
@@ -43,6 +45,7 @@ class Update extends Delete
      *
      * @param string
      * @param string
+     *
      * @return this
      * @notes loads a set into registry
      */

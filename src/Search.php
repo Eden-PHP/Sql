@@ -12,9 +12,10 @@ namespace Eden\Sql;
 /**
  * Sql Search
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Search extends Base
 {
@@ -44,6 +45,7 @@ class Search extends Base
      *
      * @param string
      * @param array
+     *
      * @return mixed
      */
     public function __call($name, $args)
@@ -135,6 +137,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addFilter()
@@ -152,6 +155,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addInnerJoinOn($table, $where)
@@ -176,6 +180,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addInnerJoinUsing($table, $where)
@@ -200,6 +205,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addLeftJoinOn($table, $where)
@@ -224,6 +230,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addLeftJoinUsing($table, $where)
@@ -248,6 +255,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addOuterJoinOn($table, $where)
@@ -272,6 +280,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addOuterJoinUsing($table, $where)
@@ -296,6 +305,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addRightJoinOn($table, $where)
@@ -320,6 +330,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function addRightJoinUsing($table, $where)
@@ -344,6 +355,7 @@ class Search extends Base
      *
      * @param string
      * @param string
+     *
      * @return this
      */
     public function addSort($column, $order = self::ASC)
@@ -383,6 +395,7 @@ class Search extends Base
      * Returns the one result in a model
      *
      * @param int
+     *
      * @return Eden\Sql\Model
      */
     public function getModel($index = 0)
@@ -396,6 +409,7 @@ class Search extends Base
      *
      * @param int|string
      * @param string|null
+     *
      * @return array|null
      */
     public function getRow($index = 0, $column = null)
@@ -474,6 +488,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function innerJoinOn($table, $where)
@@ -498,6 +513,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function innerJoinUsing($table, $where)
@@ -522,6 +538,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function leftJoinOn($table, $where)
@@ -546,6 +563,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function leftJoinUsing($table, $where)
@@ -570,6 +588,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function outerJoinOn($table, $where)
@@ -594,6 +613,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function outerJoinUsing($table, $where)
@@ -618,6 +638,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function rightJoinOn($table, $where)
@@ -642,6 +663,7 @@ class Search extends Base
      *
      * @param string
      * @param string[,string..]
+     *
      * @return this
      */
     public function rightJoinUsing($table, $where)
@@ -665,6 +687,7 @@ class Search extends Base
      * Sets Columns
      *
      * @param string[,string..]|array
+     *
      * @return this
      */
     public function setColumns($columns)
@@ -682,6 +705,7 @@ class Search extends Base
      * Sets default collection
      *
      * @param string
+     *
      * @return this
      */
     public function setCollection($collection)
@@ -705,6 +729,7 @@ class Search extends Base
      * Group by clause
      *
      * @param string group
+     *
      * @return this
      */
     public function setGroup($group)
@@ -724,6 +749,7 @@ class Search extends Base
      * Sets default model
      *
      * @param string
+     *
      * @return this
      */
     public function setModel($model)
@@ -746,6 +772,7 @@ class Search extends Base
      * Sets the pagination page
      *
      * @param int
+     *
      * @return this
      */
     public function setPage($page)
@@ -765,6 +792,7 @@ class Search extends Base
      * Sets the pagination range
      *
      * @param int
+     *
      * @return this
      */
     public function setRange($range)
@@ -784,6 +812,7 @@ class Search extends Base
      * Sets the pagination start
      *
      * @param int
+     *
      * @return this
      */
     public function setStart($start)
@@ -803,6 +832,7 @@ class Search extends Base
      * Sets Table
      *
      * @param string
+     *
      * @return this
      */
     public function setTable($table)

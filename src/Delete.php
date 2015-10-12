@@ -12,9 +12,10 @@ namespace Eden\Sql;
 /**
  * Generates delete query string syntax
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Delete extends Query
 {
@@ -52,6 +53,7 @@ class Delete extends Query
      * Set the table name in which you want to delete from
      *
      * @param string name
+     *
      * @return this
      */
     public function setTable($table)
@@ -67,6 +69,7 @@ class Delete extends Query
      * Where clause
      *
      * @param array|string where
+     *
      * @return this
      */
     public function where($where)

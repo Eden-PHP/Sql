@@ -460,7 +460,7 @@ class Model extends ModelBase
 	{
 		$valid = array();
 		foreach($columns as $column) {
-			if(!isset($this->data[$column])) {
+			if(!isset($this->data[$column]) && !is_null($this->data[$column])) {
 				continue;
 			}
 			

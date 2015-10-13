@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -12,21 +12,34 @@ namespace Eden\Sql;
 /**
  * Sql Collection handler
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  Sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Collection extends \Eden\Collection\Index
 {
+    /**
+     * @var string $model The name of the model
+     */
     protected $model = Index::MODEL;
+       
+    /**
+     * @var Eden\Sql\Index $database The database resource
+     */
     protected $database = null;
+       
+    /**
+     * @var string|null $table Default table name
+     */
     protected $table = null;
     
     /**
      * Adds a row to the collection
      *
-     * @param array|Eden_Model
-     * @return this
+     * @param array|Eden\Model\Index $row The row to add
+     *
+     * @return Eden\Sql\Collection
      */
     public function add($row = array())
     {
@@ -57,8 +70,9 @@ class Collection extends \Eden\Collection\Index
     /**
      * Sets the default database
      *
-     * @param Eden\Sql\Index
-     * @return this
+     * @param Eden\Sql\Index $database Database object instance
+     *
+     * @return Eden\Sql\Collection
      */
     public function setDatabase(Index $database)
     {
@@ -80,8 +94,9 @@ class Collection extends \Eden\Collection\Index
     /**
      * Sets default model
      *
-     * @param string
-     * @return this
+     * @param string $model The name of the model class
+     *
+     * @return Eden\Sql\Collection
      */
     public function setModel($model)
     {
@@ -102,8 +117,9 @@ class Collection extends \Eden\Collection\Index
     /**
      * Sets the default database
      *
-     * @param string
-     * @return this
+     * @param string $table The name of the table
+     *
+     * @return Eden\Sql\Collection
      */
     public function setTable($table)
     {

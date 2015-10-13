@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -12,25 +12,57 @@ namespace Eden\Sql;
 /**
  * Generates select query string syntax
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  Sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Select extends Query
 {
+    /**
+     * @var string|null $select List of columns
+     */
     protected $select   = null;
-    protected $from     = null;
-    protected $joins    = null;
-    protected $where    = array();
-    protected $sortBy   = array();
-    protected $group    = array();
-    protected $page     = null;
-    protected $length   = null;
+
+    /**
+     * @var string|null $from Main table
+     */
+    protected $from = null;
+
+    /**
+     * @var array|null $joins List of relatoinal joins
+     */
+    protected $joins = null;
+
+    /**
+     * @var array $where List of filters
+     */
+    protected $where = array();
+
+    /**
+     * @var array $sortBy List of order and directions
+     */
+    protected $sortBy = array();
+
+    /**
+     * @var array $group List of "group bys"
+     */
+    protected $group = array();
+
+    /**
+     * @var int|null $page Pagination start
+     */
+    protected $page = null;
+
+    /**
+     * @var int|null $length Pagination range
+     */
+    protected $length = null;
     
     /**
      * Construct: Set the columns, if any
      *
-     * @param string|null
+     * @param string|null $select Column names
      */
     public function __construct($select = '*')
     {
@@ -40,8 +72,9 @@ class Select extends Query
     /**
      * From clause
      *
-     * @param string from
-     * @return this
+     * @param *string $from Main table
+     *
+     * @return Eden\Sql\Select
      */
     public function from($from)
     {
@@ -55,7 +88,6 @@ class Select extends Query
     /**
      * Returns the string version of the query
      *
-     * @param  bool
      * @return string
      */
     public function getQuery()
@@ -83,8 +115,9 @@ class Select extends Query
     /**
      * Group by clause
      *
-     * @param string group
-     * @return this
+     * @param *string|array $group List of "group bys"
+     *
+     * @return Eden\Sql\Select
      */
     public function groupBy($group)
     {
@@ -102,10 +135,11 @@ class Select extends Query
     /**
      * Inner join clause
      *
-     * @param string table
-     * @param string where
-     * @param bool on
-     * @return this
+     * @param *string $table Table name to join
+     * @param *string $where Filter/s
+     * @param bool    $using Whether to use "using" syntax (as opposed to "on")
+     *
+     * @return Eden\Sql\Select
      */
     public function innerJoin($table, $where, $using = true)
     {
@@ -125,11 +159,12 @@ class Select extends Query
      * Allows you to add joins of different types
      * to the query
      *
-     * @param string type
-     * @param string table
-     * @param string where
-     * @param bool on
-     * @return this
+     * @param *string $type  Join type
+     * @param *string $table Table name to join
+     * @param *string $where Filter/s
+     * @param bool    $using Whether to use "using" syntax (as opposed to "on")
+     *
+     * @return Eden\Sql\Select
      */
     public function join($type, $table, $where, $using = true)
     {
@@ -153,10 +188,11 @@ class Select extends Query
     /**
      * Left join clause
      *
-     * @param string table
-     * @param string where
-     * @param bool on
-     * @return this
+     * @param *string $table Table name to join
+     * @param *string $where Filter/s
+     * @param bool    $using Whether to use "using" syntax (as opposed to "on")
+     *
+     * @return Eden\Sql\Select
      */
     public function leftJoin($table, $where, $using = true)
     {
@@ -175,9 +211,10 @@ class Select extends Query
     /**
      * Limit clause
      *
-     * @param string|int page
-     * @param string|int length
-     * @return this
+     * @param *string|int $page   Pagination start
+     * @param *string|int $length Pagination range
+     *
+     * @return Eden\Sql\Select
      */
     public function limit($page, $length)
     {
@@ -197,10 +234,11 @@ class Select extends Query
     /**
      * Outer join clause
      *
-     * @param string table
-     * @param string where
-     * @param bool on
-     * @return this
+     * @param *string $table Table name to join
+     * @param *string $where Filter/s
+     * @param bool    $using Whether to use "using" syntax (as opposed to "on")
+     *
+     * @return Eden\Sql\Select
      */
     public function outerJoin($table, $where, $using = true)
     {
@@ -219,10 +257,11 @@ class Select extends Query
     /**
      * Right join clause
      *
-     * @param string table
-     * @param string where
-     * @param bool on
-     * @return this
+     * @param *string $table Table name to join
+     * @param *string $where Filter/s
+     * @param bool    $using Whether to use "using" syntax (as opposed to "on")
+     *
+     * @return Eden\Sql\Select
      */
     public function rightJoin($table, $where, $using = true)
     {
@@ -241,8 +280,9 @@ class Select extends Query
     /**
      * Select clause
      *
-     * @param string select
-     * @return this
+     * @param string $select Select columns
+     *
+     * @return Eden\Sql\Select
      */
     public function select($select = '*')
     {
@@ -263,9 +303,10 @@ class Select extends Query
     /**
      * Order by clause
      *
-     * @param string field
-     * @param string order
-     * @return this
+     * @param *string $field Column name
+     * @param string  $order Direction
+     *
+     * @return Eden\Sql\Select
      */
     public function sortBy($field, $order = 'ASC')
     {
@@ -284,8 +325,9 @@ class Select extends Query
     /**
      * Where clause
      *
-     * @param array|string where
-     * @return this
+     * @param array|string Filter/s
+     *
+     * @return Eden\Sql\Select
      */
     public function where($where)
     {

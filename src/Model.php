@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -12,30 +12,65 @@ namespace Eden\Sql;
 /**
  * Sql Model
  *
- * @vendor Eden
- * @package sql
- * @author Christian Blanquera cblanquera@openovate.com
+ * @vendor   Eden
+ * @package  Sql
+ * @author   Christian Blanquera <cblanquera@openovate.com>
+ * @standard PSR-2
  */
 class Model extends \Eden\Model\Index
 {
+    /**
+     * @const string COLUMNS The name of the columns
+     */
     const COLUMNS = 'columns';
+
+    /**
+     * @const string PRIMARY Primary keyword
+     */
     const PRIMARY = 'primary';
+
+    /**
+     * @const string DATETIME Default datetime format
+     */
     const DATETIME = 'Y-m-d h:i:s';
+
+    /**
+     * @const string DATE Default date format
+     */
     const DATE = 'Y-m-d';
+
+    /**
+     * @const string TIME Default time format
+     */
     const TIME = 'h:i:s';
-    const TIMESTAMP     = 'U';
+
+    /**
+     * @const string TIMESTAMP Default timestamp format
+     */
+    const TIMESTAMP = 'U';
     
+    /**
+     * @var string|null $table Table name
+     */
     protected $table = null;
+    
+    /**
+     * @var Eden\Sql\Index|null $database Sql database object
+     */
     protected $database = null;
     
+    /**
+     * @var array $meta Stored table meta data
+     */
     protected static $meta = array();
     
     /**
      * Useful method for formating a time column.
      *
-     * @param string
-     * @param string
-     * @return this
+     * @param *string $column Column name
+     * @param string  $format datetime format
+     *
+     * @return Eden\Sql\Model
      */
     public function formatTime($column, $format = self::DATETIME)
     {
@@ -77,9 +112,10 @@ class Model extends \Eden\Model\Index
     /**
      * Inserts model to database
      *
-     * @param string
-     * @param Eden\Sql\Index
-     * @return this
+     * @param string|null         $table    Table name
+     * @param Eden\Sql\Index|null $database Dabase object
+     *
+     * @return Eden\Sql\Model
      */
     public function insert($table = null, Index $database = null)
     {
@@ -129,10 +165,11 @@ class Model extends \Eden\Model\Index
     /**
      * Removes model from database
      *
-     * @param string
-     * @param Eden\Sql\Index
-     * @param string|array|null
-     * @return this
+     * @param string|null         $table    Table name
+     * @param Eden\Sql\Index|null $database Dabase object
+     * @param string|array|null   $primary  The primary column if you know it
+     *
+     * @return Eden\Sql\Model
      */
     public function remove(
         $table = null,
@@ -202,11 +239,11 @@ class Model extends \Eden\Model\Index
     /**
      * Inserts or updates model to database
      *
-     * @param string
-     * @param Eden\Sql\Index
-     * @param string|array|null
-     * @param string|null
-     * @return this
+     * @param string|null         $table    Table name
+     * @param Eden\Sql\Index|null $database Dabase object
+     * @param string|array|null   $primary  The primary column if you know it
+     *
+     * @return Eden\Sql\Model
      */
     public function save(
         $table = null,
@@ -268,8 +305,9 @@ class Model extends \Eden\Model\Index
     /**
      * Sets the default database
      *
-     * @param Eden\Sql\Index
-     * @return this
+     * @param Eden\Sql\Index $database A database object
+     *
+     * @return Eden\Sql\Model
      */
     public function setDatabase(Index $database)
     {
@@ -280,8 +318,9 @@ class Model extends \Eden\Model\Index
     /**
      * Sets the default database
      *
-     * @param string
-     * @return this
+     * @param string $table Table name
+     *
+     * @return Eden\Sql\Model
      */
     public function setTable($table)
     {
@@ -295,10 +334,11 @@ class Model extends \Eden\Model\Index
     /**
      * Updates model to database
      *
-     * @param string
-     * @param Eden\Sql\Index
-     * @param string|array|null
-     * @return this
+     * @param string|null         $table    Table name
+     * @param Eden\Sql\Index|null $database Dabase object
+     * @param string|array|null   $primary  The primary column if you know it
+     *
+     * @return Eden\Sql\Model
      */
     public function update(
         $table = null,
@@ -367,9 +407,10 @@ class Model extends \Eden\Model\Index
     /**
      * Checks to see if the model is populated
      *
-     * @param string|null
-     * @param string|null
-     * @return this
+     * @param string|null         $table    Table name
+     * @param Eden\Sql\Index|null $database Database object
+     *
+     * @return Eden\Sql\Model
      */
     protected function isLoaded($table = null, $database = null)
     {
@@ -401,7 +442,8 @@ class Model extends \Eden\Model\Index
     /**
      * Checks to see if we have a primary value/s set
      *
-     * @param array
+     * @param array $primary List of primary columns
+     *
      * @return bool
      */
     protected function isPrimarySet(array $primary)
@@ -418,8 +460,9 @@ class Model extends \Eden\Model\Index
     /**
      * Returns the table meta data
      *
-     * @param string|null
-     * @param string|null
+     * @param string|null         $table    Table name
+     * @param Eden\Sql\Index|null $database Database object
+     *
      * @return array
      */
     protected function getMeta($table, $database)
@@ -453,7 +496,8 @@ class Model extends \Eden\Model\Index
      * Returns only the valid data given
      * the partiular table
      *
-     * @param array
+     * @param array $columns An unsorted list of possible columns
+     *
      * @return array
      */
     protected function getValidColumns($columns)

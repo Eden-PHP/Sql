@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -13,18 +13,25 @@ namespace Eden\Sql;
  * Generates insert query string syntax
  *
  * @vendor   Eden
- * @package  sql
+ * @package  Sql
  * @author     Christian Blanquera cblanquera@openovate.com
  */
 class Insert extends Query
 {
+    /**
+     * @var array $setKey List of keys
+     */
     protected $setKey = array();
+
+    /**
+     * @var array $setVal List of values
+     */
     protected $setVal = array();
     
     /**
-     * Construct: Set the table, if any
+     * Set the table, if any
      *
-     * @param string|null
+     * @param string|null $table Table name
      */
     public function __construct($table = null)
     {
@@ -39,8 +46,6 @@ class Insert extends Query
     
     /**
      * Returns the string version of the query
-     *
-     * @param bool
      *
      * @return string
      */
@@ -60,10 +65,11 @@ class Insert extends Query
      * Set clause that assigns a given field name to a given value.
      * You can also use this to add multiple rows in one call
      *
-     * @param string
-     * @param string
+     * @param *string      $key   The column name
+     * @param *scalar|null $value The column value
+     * @param int          $index For what row is this for?
      *
-     * @return this
+     * @return Eden\Sql\Insert
      */
     public function set($key, $value, $index = 0)
     {
@@ -91,9 +97,9 @@ class Insert extends Query
     /**
      * Set the table name in which you want to delete from
      *
-     * @param string name
+     * @param string $table The table name
      *
-     * @return this
+     * @return Eden\Sql\Insert
      */
     public function setTable($table)
     {

@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -13,7 +13,7 @@ namespace Eden\Sql;
  * Generates select query string syntax
  *
  * @vendor   Eden
- * @package  sql
+ * @package  Sql
  * @author   Christian Blanquera <cblanquera@openovate.com>
  * @standard PSR-2
  */
@@ -33,7 +33,7 @@ abstract class Query extends Base
     /**
      * Returns the string version of the query
      *
-     * @param  bool
+     * @param bool
      *
      * @return string
      */

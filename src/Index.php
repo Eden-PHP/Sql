@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -17,40 +17,80 @@ namespace Eden\Sql;
  * needing to know the query language.
  *
  * @vendor   Eden
- * @package  sql
+ * @package  Sql
  * @author   Christian Blanquera <cblanquera@openovate.com>
  * @standard PSR-2
  */
 abstract class Index extends Base
 {
+    /**
+     * @const int INSTANCE Flag that designates multiton when using ::i()
+     */
     const INSTANCE = 0;
-    
+
+    /**
+     * @const string FIRST The first index in getQueries
+     */
     const FIRST = 'first';
-    const LAST  = 'last';
+
+    /**
+     * @const string LAST The last index in getQueries
+     */
+    const LAST = 'last';
+
+    /**
+     * @const string QUERY The default query
+     */
     const QUERY = 'Eden\\Sql\\Query';
+
+    /**
+     * @const string MODEL The default model
+     */
     const MODEL = 'Eden\\Sql\\Model';
+
+    /**
+     * @const string COLLECTION The default collection
+     */
     const COLLECTION = 'Eden\\Sql\\Collection';
-    
+       
+    /**
+     * @var array $queries List of queries performed with results
+     */
     protected $queries = array();
+       
+    /**
+     * @var [RESOURCE] $connection PDO resource
+     */
     protected $connection = null;
+       
+    /**
+     * @var array $binds Bound data from the current query
+     */
     protected $binds = array();
-    
+       
+    /**
+     * @var string $model The current model class name
+     */
     protected $model = self::MODEL;
+       
+    /**
+     * @var string $collection The current collection class name
+     */
     protected $collection = self::COLLECTION;
     
     /**
      * Connects to the database
      *
-     * @param array the connection options
+     * @param array $options The connection options
      *
-     * @return this
+     * @return Eden\Sql\Index
      */
     abstract public function connect(array $options = array());
     
     /**
      * Binds a value and returns the bound key
      *
-     * @param string|array|number|null
+     * @param *string|array|number|null $value What to bind
      *
      * @return string
      */
@@ -77,7 +117,7 @@ abstract class Index extends Base
     /**
      * Returns collection
      *
-     * @param array
+     * @param array $data Initial collection data
      *
      * @return Eden\Sql\Collection
      */
@@ -94,7 +134,7 @@ abstract class Index extends Base
     /**
      * Returns the delete query builder
      *
-     * @param string|null
+     * @param *string|null $table The table name
      *
      * @return Eden\Sql\Delete
      */
@@ -109,8 +149,8 @@ abstract class Index extends Base
     /**
      * Removes rows that match a filter
      *
-     * @param string table
-     * @param array filter
+     * @param *string|null $table   The table name
+     * @param array|string $filters Filters to test against
      *
      * @return Eden\Sql\Collection
      */
@@ -200,6 +240,8 @@ abstract class Index extends Base
     /**
      * Returns the last inserted id
      *
+     * @param string|null $column A particular column name
+     *
      * @return int the id
      */
     public function getLastInsertedId($column = null)
@@ -214,9 +256,9 @@ abstract class Index extends Base
     /**
      * Returns a model given the column name and the value
      *
-     * @param string table
-     * @param string name
-     * @param scalar|null value
+     * @param *string      $table Table name
+     * @param *string      $name  Column name
+     * @param *scalar|null $value Column value
      *
      * @return Eden\Sql\Model|null
      */
@@ -244,7 +286,7 @@ abstract class Index extends Base
     /**
      * Returns the history of queries made still in memory
      *
-     * @param int|string|null
+     * @param int|string|null $index A particular index to return
      *
      * @return array|null the queries
      */
@@ -281,9 +323,9 @@ abstract class Index extends Base
     /**
      * Returns a 1 row result given the column name and the value
      *
-     * @param string table
-     * @param string name
-     * @param string value
+     * @param *string      $table Table name
+     * @param *string      $name  Column name
+     * @param *scalar|null $value Column value
      *
      * @return array|null
      */
@@ -322,7 +364,7 @@ abstract class Index extends Base
     /**
      * Returns the insert query builder
      *
-     * @param string|null
+     * @param string|null $table Name of table
      *
      * @return Eden\Sql\Insert
      */
@@ -337,11 +379,11 @@ abstract class Index extends Base
     /**
      * Inserts data into a table and returns the ID
      *
-     * @param string table
-     * @param array setting
-     * @param bool|array
+     * @param *string    $table   Table name
+     * @param *array     $setting Key/value array matching table columns
+     * @param bool|array $bind    Whether to compute with binded variables
      *
-     * @return this
+     * @return Eden\Sql\Index
      */
     public function insertRow($table, array $settings, $bind = true)
     {
@@ -386,11 +428,11 @@ abstract class Index extends Base
     /**
      * Inserts multiple rows into a table
      *
-     * @param string table
-     * @param array settings
-     * @param bool|array
+     * @param *string    $table   Table name
+     * @param array      $setting Key/value 2D array matching table columns
+     * @param bool|array $bind    Whether to compute with binded variables
      *
-     * @return this
+     * @return Eden\Sql\Index
      */
     public function insertRows($table, array $settings, $bind = true)
     {
@@ -437,7 +479,7 @@ abstract class Index extends Base
     /**
      * Returns model
      *
-     * @param array
+     * @param array $data The initial data to set
      *
      * @return Eden\Sql\Model
      */
@@ -450,8 +492,8 @@ abstract class Index extends Base
     /**
      * Queries the database
      *
-     * @param string query
-     * @param array binded value
+     * @param *string $query The query to ran
+     * @param array   $binds List of binded values
      *
      * @return array
      */
@@ -514,7 +556,7 @@ abstract class Index extends Base
     /**
      * Returns search
      *
-     * @param string|null
+     * @param string|null $table Table name
      *
      * @return Eden\Sql\Search
      */
@@ -537,7 +579,7 @@ abstract class Index extends Base
     /**
      * Returns the select query builder
      *
-     * @param string|array
+     * @param string|array $select Column list
      *
      * @return Eden\Sql\Select
      */
@@ -552,9 +594,9 @@ abstract class Index extends Base
     /**
      * Sets all the bound values of this query
      *
-     * @param array
+     * @param *array $binds key/values to bind
      *
-     * @return this
+     * @return Eden\Sql\Index
      */
     public function setBinds(array $binds)
     {
@@ -565,9 +607,9 @@ abstract class Index extends Base
     /**
      * Sets default collection
      *
-     * @param string
+     * @param *string $collection Collection class name
      *
-     * @return this
+     * @return Eden\Sql\Index
      */
     public function setCollection($collection)
     {
@@ -589,9 +631,9 @@ abstract class Index extends Base
     /**
      * Sets the default model
      *
-     * @param string
+     * @param *string Model class name
      *
-     * @return this
+     * @return Eden\Sql\Index
      */
     public function setModel($model)
     {
@@ -613,12 +655,12 @@ abstract class Index extends Base
     /**
      * Sets only 1 row given the column name and the value
      *
-     * @param string table
-     * @param string name
-     * @param string value
-     * @param array setting
+     * @param *string      $table   Table name
+     * @param *string      $name    Column name
+     * @param *scalar|null $value   Column value
+     * @param *array       $setting Key/value array matching table columns
      *
-     * @return this
+     * @return Eden\Sql\Index
      */
     public function setRow($table, $name, $value, array $setting)
     {
@@ -647,6 +689,8 @@ abstract class Index extends Base
     /**
      * Returns the update query builder
      *
+     * @param string|null $table Name of table
+     *
      * @return Eden\Sql\Update
      */
     public function update($table = null)
@@ -660,11 +704,12 @@ abstract class Index extends Base
     /**
      * Updates rows that match a filter given the update settings
      *
-     * @param string table
-     * @param array setting
-     * @param array filter
+     * @param *string      $table   Table name
+     * @param *array       $setting Key/value array matching table columns
+     * @param array|string $filters Filters to test against
+     * @param bool|array   $bind    Whether to compute with binded variables
      *
-     * @return var
+     * @return Eden\Sql\Index
      */
     public function updateRows($table, array $settings, $filters = null, $bind = true)
     {

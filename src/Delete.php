@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -13,19 +13,26 @@ namespace Eden\Sql;
  * Generates delete query string syntax
  *
  * @vendor   Eden
- * @package  sql
+ * @package  Sql
  * @author   Christian Blanquera <cblanquera@openovate.com>
  * @standard PSR-2
  */
 class Delete extends Query
 {
+    /**
+     * @var array $table Table name
+     */
     protected $table = null;
+
+    /**
+     * @var array $where List of filters
+     */
     protected $where = array();
     
     /**
      * Construct: Set the table, if any
      *
-     * @param string|null
+     * @param string|null $table The initial name of the table
      */
     public function __construct($table = null)
     {
@@ -52,9 +59,9 @@ class Delete extends Query
     /**
      * Set the table name in which you want to delete from
      *
-     * @param string name
+     * @param string|null $table The initial name of the table
      *
-     * @return this
+     * @return Eden\Sql\Delete
      */
     public function setTable($table)
     {
@@ -68,9 +75,9 @@ class Delete extends Query
     /**
      * Where clause
      *
-     * @param array|string where
+     * @param array|string $where The where clause
      *
-     * @return this
+     * @return Eden\Sql\Delete
      */
     public function where($where)
     {

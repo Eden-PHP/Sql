@@ -1,9 +1,9 @@
 <?php //-->
-/*
- * This file is part of the Sql package of the Eden PHP Library.
- * (c) 2013-2014 Openovate Labs
+/**
+ * This file is part of the Eden PHP Library.
+ * (c) 2014-2016 Openovate Labs
  *
- * Copyright and license information can be found at LICENSE
+ * Copyright and license information can be found at LICENSE.txt
  * distributed with this package.
  */
 
@@ -13,38 +13,103 @@ namespace Eden\Sql;
  * Sql Search
  *
  * @vendor   Eden
- * @package  sql
+ * @package  Sql
  * @author   Christian Blanquera <cblanquera@openovate.com>
  * @standard PSR-2
  */
 class Search extends Base
 {
+    /**
+     * @const string LEFT Join type
+     */
     const LEFT  = 'LEFT';
+
+    /**
+     * @const string RIGHT Join type
+     */
     const RIGHT = 'RIGHT';
+
+    /**
+     * @const string INNER Join type
+     */
     const INNER = 'INNER';
+
+    /**
+     * @const string OUTER Join type
+     */
     const OUTER = 'OUTER';
+
+    /**
+     * @const string ASC Sort direction
+     */
     const ASC   = 'ASC';
+
+    /**
+     * @const string DESC Sort direction
+     */
     const DESC  = 'DESC';
-    
+
+    /**
+     * @var Eden\Sql\Index|null $database Database object
+     */
     protected $database = null;
+
+    /**
+     * @var string|null $table Table name
+     */
     protected $table = null;
+
+    /**
+     * @var array $columns List of columns
+     */
     protected $columns = array();
+
+    /**
+     * @var array $join List of relational joins
+     */
     protected $join = array();
+
+    /**
+     * @var array $filter List of filters
+     */
     protected $filter = array();
-    protected $sort     = array();
+
+    /**
+     * @var array $sort List of orders and directions
+     */
+    protected $sort = array();
+
+    /**
+     * @var array $group List of "group bys"
+     */
     protected $group = array();
+
+    /**
+     * @var array $start Pagination start
+     */
     protected $start = 0;
+
+    /**
+     * @var array $range Pagination range
+     */
     protected $range = 0;
-    
+
+    /**
+     * @var string $model Model name
+     */
     protected $model = Index::MODEL;
+
+    /**
+     * @var string $collection Collection name
+     */
     protected $collection = Index::COLLECTION;
     
     /**
      * Magical processing of sortBy
      * and filterBy Methods
      *
-     * @param string
-     * @param array
+     * @param *string $name Name of method
+     * @param *array  $args Arguments to pass
      *
      * @return mixed
      */
@@ -125,7 +190,7 @@ class Search extends Base
     /**
      * Construct: Store database
      *
-     * @param Eden\Sql\Index
+     * @param Eden\Sql\Index $database Database object
      */
     public function __construct(Index $database)
     {
@@ -135,10 +200,10 @@ class Search extends Base
     /**
      * Adds filter
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string           sprintf format
+     * @param string[,string..] sprintf values
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addFilter()
     {
@@ -153,10 +218,10 @@ class Search extends Base
     /**
      * Adds Inner Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addInnerJoinOn($table, $where)
     {
@@ -178,10 +243,10 @@ class Search extends Base
     /**
      * Adds Inner Join Using
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addInnerJoinUsing($table, $where)
     {
@@ -203,10 +268,10 @@ class Search extends Base
     /**
      * Adds Left Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addLeftJoinOn($table, $where)
     {
@@ -228,10 +293,10 @@ class Search extends Base
     /**
      * Adds Left Join Using
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addLeftJoinUsing($table, $where)
     {
@@ -253,10 +318,10 @@ class Search extends Base
     /**
      * Adds Outer Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addOuterJoinOn($table, $where)
     {
@@ -276,12 +341,12 @@ class Search extends Base
     }
     
     /**
-     * Adds Outer Join USing
+     * Adds Outer Join Using
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addOuterJoinUsing($table, $where)
     {
@@ -303,10 +368,10 @@ class Search extends Base
     /**
      * Adds Right Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addRightJoinOn($table, $where)
     {
@@ -328,10 +393,10 @@ class Search extends Base
     /**
      * Adds Right Join Using
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addRightJoinUsing($table, $where)
     {
@@ -353,10 +418,10 @@ class Search extends Base
     /**
      * Adds sort
      *
-     * @param string
-     * @param string
+     * @param *string $column Column name
+     * @param string  $order  ASC or DESC
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function addSort($column, $order = self::ASC)
     {
@@ -394,7 +459,7 @@ class Search extends Base
     /**
      * Returns the one result in a model
      *
-     * @param int
+     * @param int $index Row index to return
      *
      * @return Eden\Sql\Model
      */
@@ -407,8 +472,8 @@ class Search extends Base
     /**
      * Returns the one result
      *
-     * @param int|string
-     * @param string|null
+     * @param int         $index  Row index to return
+     * @param string|null $column Specific column to return
      *
      * @return array|null
      */
@@ -486,10 +551,10 @@ class Search extends Base
     /**
      * Adds Inner Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function innerJoinOn($table, $where)
     {
@@ -511,10 +576,10 @@ class Search extends Base
     /**
      * Adds Inner Join Using
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function innerJoinUsing($table, $where)
     {
@@ -536,10 +601,10 @@ class Search extends Base
     /**
      * Adds Left Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function leftJoinOn($table, $where)
     {
@@ -561,10 +626,10 @@ class Search extends Base
     /**
      * Adds Left Join Using
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function leftJoinUsing($table, $where)
     {
@@ -586,10 +651,10 @@ class Search extends Base
     /**
      * Adds Outer Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function outerJoinOn($table, $where)
     {
@@ -611,10 +676,10 @@ class Search extends Base
     /**
      * Adds Outer Join USing
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function outerJoinUsing($table, $where)
     {
@@ -636,10 +701,10 @@ class Search extends Base
     /**
      * Adds Right Join On
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function rightJoinOn($table, $where)
     {
@@ -661,10 +726,10 @@ class Search extends Base
     /**
      * Adds Right Join Using
      *
-     * @param string
-     * @param string[,string..]
+     * @param *string            $table Table name
+     * @param *string[,string..] $where Filter/s
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function rightJoinUsing($table, $where)
     {
@@ -686,9 +751,9 @@ class Search extends Base
     /**
      * Sets Columns
      *
-     * @param string[,string..]|array
+     * @param string[,string..]|array $columns List of table columns
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setColumns($columns)
     {
@@ -704,9 +769,9 @@ class Search extends Base
     /**
      * Sets default collection
      *
-     * @param string
+     * @param string $collection Collection class name
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setCollection($collection)
     {
@@ -728,9 +793,9 @@ class Search extends Base
     /**
      * Group by clause
      *
-     * @param string group
+     * @param string $group Column name
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setGroup($group)
     {
@@ -748,9 +813,9 @@ class Search extends Base
     /**
      * Sets default model
      *
-     * @param string
+     * @param string $model Model class name
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setModel($model)
     {
@@ -771,9 +836,9 @@ class Search extends Base
     /**
      * Sets the pagination page
      *
-     * @param int
+     * @param int $page Pagination page
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setPage($page)
     {
@@ -791,9 +856,9 @@ class Search extends Base
     /**
      * Sets the pagination range
      *
-     * @param int
+     * @param int $range Pagination range
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setRange($range)
     {
@@ -811,9 +876,9 @@ class Search extends Base
     /**
      * Sets the pagination start
      *
-     * @param int
+     * @param int $start Pagination start
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setStart($start)
     {
@@ -831,9 +896,9 @@ class Search extends Base
     /**
      * Sets Table
      *
-     * @param string
+     * @param string $table Table class name
      *
-     * @return this
+     * @return Eden\Sql\Search
      */
     public function setTable($table)
     {

@@ -477,8 +477,10 @@ abstract class Factory extends CoreEvent
 			//throw Exception
 			Exception::i()
 				->setMessage(Exception::QUERY_ERROR)
-				->addVariable($query)
+				->addVariable($error[0])
+				->addVariable($error[1])
 				->addVariable($error[2])
+				->addVariable($query)
 				->trigger();
 		}
 		

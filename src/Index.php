@@ -79,6 +79,11 @@ abstract class Index extends Base
     protected $collection = self::COLLECTION;
     
     /**
+     * @var boolean $queryCache The query cache flag
+     */
+    protected $queryCache = false;
+
+    /**
      * Connects to the database
      *
      * @param array $options The connection options
@@ -538,12 +543,14 @@ abstract class Index extends Base
         
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         
-        //log query
-        $this->queries[] = array(
-            'query'     => $query,
-            'binds'     => $binds,
-            'results'   => $results);
-        
+        if($this->queryCache) {
+            //log query
+            $this->queries[] = array(
+                'query'     => $query,
+                'binds'     => $binds,
+                'results'   => $results);
+        }
+
         //clear binds
         $this->binds = array();
         
@@ -628,6 +635,22 @@ abstract class Index extends Base
         return $this;
     }
     
+    /**
+     * Sets the default Query Cache
+     *
+     * @param *boolean query cache
+     *
+     * @return Eden\Sql\Index
+     */
+    public function setQueryCache($cache)
+    {
+        //Argument 1 must be a boolean
+        Argument::i()->test(1, 'bool');
+        
+        $this->queryCache = $cache;
+        return $this;
+    }
+
     /**
      * Sets the default model
      *

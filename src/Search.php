@@ -491,7 +491,7 @@ class Search extends Base
             $index = 0;
         }
         
-        $rows = $this->getRows();
+        $rows = $this->setRange(1)->getRows();
         
         if (!is_null($column) && isset($rows[$index][$column])) {
             return $rows[$index][$column];

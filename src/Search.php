@@ -491,12 +491,14 @@ class Search extends Base
             $index = 0;
         }
         
-        $rows = $this->setRange(1)->getRows();
-        
-        if (!is_null($column) && isset($rows[$index][$column])) {
-            return $rows[$index][$column];
-        } else if (is_null($column) && isset($rows[$index])) {
-            return $rows[$index];
+        $rows = $this->setStart($index)->setRange(1)->getRows();
+
+        if(!is_null($rows) && isset($rows[0][$column])) {
+            return $rows[0][$column];
+        }
+
+        if(isset($rows[0])) {
+            return $rows[0];
         }
         
         return null;

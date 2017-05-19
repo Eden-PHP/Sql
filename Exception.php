@@ -20,7 +20,7 @@ use Eden\Core\Exception as CoreException;
  */
 class Exception extends CoreException
 {
-	const QUERY_ERROR 		= '%s Query: %s';
+	const QUERY_ERROR 		= '(%s | %s) - %s Query: %s';
 	const TABLE_NOT_SET 	= 'No default table set or was passed.';
 	const DATABASE_NOT_SET 	= 'No default database set or was passed.';
 	

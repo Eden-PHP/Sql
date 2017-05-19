@@ -24,6 +24,8 @@ use Eden\Core\Event as CoreEvent;
  */
 abstract class Factory extends CoreEvent 
 {
+	const INSTANCE = 0;
+	
 	const FIRST = 'first';
 	const LAST	= 'last';
 	const QUERY = 'Eden\\Sql\\Query';
@@ -62,7 +64,7 @@ abstract class Factory extends CoreEvent
 			}
 			
 			return '('.implode(",",$value).')';
-		} else if(is_numeric($value)) {
+		} else if(is_int($value) || ctype_digit($value)) {
 			return $value;
 		}
 		
@@ -116,6 +118,10 @@ abstract class Factory extends CoreEvent
 			//Argument 2 must be a string or array
 			->test(2, 'array', 'string');	
 		
+		//clear binds
+		$this->clearBinds();
+
+		// build query
 		$query = $this->delete($table);
 		
 		//array('post_id=%s AND post_title IN %s', 123, array('asd'));
@@ -173,6 +179,16 @@ abstract class Factory extends CoreEvent
 	public function getBinds() 
 	{
 		return $this->binds;
+	}
+
+	/**
+	 * Clears all the binded values
+	 *
+	 * @return array
+	 */
+	public function clearBinds() 
+	{
+		$this->binds = array();
 	}
 	
 	/**
@@ -289,6 +305,9 @@ abstract class Factory extends CoreEvent
 			//Argument 3 must be scalar or null
 			->test(3, 'scalar', 'null');	
 		
+		//clear binds
+		$this->clearBinds();
+
 		//make the query
 		$query = $this->select()
 			->from($table)
@@ -341,6 +360,9 @@ abstract class Factory extends CoreEvent
 			//Argument 3 must be an array or bool
 			->test(3, 'array', 'bool');	
 		
+		//clear binds
+		$this->clearBinds();
+
 		//build insert query
 		$query = $this->insert($table);
 		
@@ -446,12 +468,20 @@ abstract class Factory extends CoreEvent
 		//Argument 1 must be a string or null
 		Argument::i()->test(1, 'string', self::QUERY);
 		
+		$request = new \stdClass();
+		
+		$request->query = $query;
+		$request->binds = $binds;
+		
+		//event trigger
+		$this->trigger('sql-query-before', $request);
+		
 		$connection = $this->getConnection();
-		$query 		= (string) $query;
+		$query 		= (string) $request->query;
 		$stmt 		= $connection->prepare($query);
 		
 		//bind some more values
-		foreach($binds as $key => $value) {
+		foreach($request->binds as $key => $value) {
 			$stmt->bindValue($key, $value);
 		}
 		
@@ -463,28 +493,33 @@ abstract class Factory extends CoreEvent
 			foreach($binds as $key => $value) {
 				$query = str_replace($key, "'$value'", $query);
 			}
+
+			//clear binds
+			$this->clearBinds();
 			
 			//throw Exception
 			Exception::i()
 				->setMessage(Exception::QUERY_ERROR)
-				->addVariable($query)
+				->addVariable($error[0])
+				->addVariable($error[1])
 				->addVariable($error[2])
+				->addVariable($query)
 				->trigger();
 		}
 		
 		$results = $stmt->fetchAll( \PDO::FETCH_ASSOC );
+
+		//clear binds
+		$this->clearBinds();
 		
 		//log query
 		$this->queries[] = array(
 			'query' 	=> $query,
 			'binds' 	=> $binds,
 			'results' 	=> $results);
-		
-		//clear binds
-		$this->binds = array();
-		
+
 		//event trigger
-		$this->trigger('sql-query', $query, $binds, $results);
+		$this->trigger('sql-query-after', $query, $binds, $results);
 		
 		return $results;
 	}
@@ -648,6 +683,9 @@ abstract class Factory extends CoreEvent
 			//Argument 4 must be a string or bool
 			->test(4, 'array', 'bool');
 		
+		//clear binds
+		$this->clearBinds();
+
 		//build the query
 		$query = $this->update($table);
 		
@@ -709,7 +747,7 @@ abstract class Factory extends CoreEvent
 		}
 		
 		//run the query
-		$this->query($query, $this->getBinds());	
+		$this->query($query, $this->getBinds());
 		
 		//event trigger
 		$this->trigger('sql-update', $table, $settings, $filters);

@@ -821,6 +821,9 @@ class Search extends Base
 	 */
 	protected function getQuery() 
 	{
+		//clear binds
+		$this->database->clearBinds();
+
 		$query = $this->database->select()->from($this->table);
 		
 		foreach($this->join as $join) {

@@ -110,7 +110,7 @@ abstract class Index extends Base
             }
             
             return '('.implode(",", $value).')';
-        } else if (is_int($value) || ctype_digit($value)) {
+        } else if (is_int($value)) {
             return $value;
         }
         
